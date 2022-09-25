@@ -716,3 +716,12 @@ case $choice in
                         { sleep 1; banner; site_video_audio; };;
 esac
 }
+
+clear
+cbanner
+directories
+kill_pid
+dependencies
+xpermission
+clear
+mainmenu
