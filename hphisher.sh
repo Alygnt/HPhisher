@@ -479,9 +479,9 @@ capture_ip() {
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
 				if [ reply_tunnel=1 ]; then
-					echo -ne "${RED} IP's details cannot be captured in localhost server"
+					echo -ne "${RED} IP details cannot be captured in localhost server"
 				elif [ reply_tunnel=01 ]; then
-					echo -ne "${RED} IP's details cannot be captured in localhost server"
+					echo -ne "${RED} IP details cannot be captured in localhost server"
 				else
 					ip_details
 				fi
