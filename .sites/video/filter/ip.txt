@@ -1,8 +1,0 @@
-IP                   : ::1
-User OS              : Windows 10
-Version              : 10.0;
-Browser              : Chrome
-IP                   : ::1
-User OS              : Windows 10
-Version              : 10.0;
-Browser              : Chrome

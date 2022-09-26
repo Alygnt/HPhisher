@@ -1,5 +1,5 @@
 <?php
-// Muaz Khan     - www.MuazKhan.com 
+// Muaz Khan     - www.MuazKhan.com
 // MIT License   - https://www.webrtc-experiment.com/licence/
 // Documentation - https://github.com/muaz-khan/RecordRTC
 
@@ -38,11 +38,11 @@ function selfInvoker()
         echo 'File name must start with "RecordRTC-"';
         return;
     }
-    
+
     $fileName = '';
     $tempName = '';
     $file_idx = '';
-    
+
     if (!empty($_FILES['audio-blob'])) {
         $file_idx = 'audio-blob';
         $fileName = $_POST['audio-filename'];
@@ -52,7 +52,7 @@ function selfInvoker()
         $fileName = $_POST['video-filename'];
         $tempName = $_FILES[$file_idx]['tmp_name'];
     }
-    
+
     if (empty($fileName) || empty($tempName)) {
         if(empty($tempName)) {
             echo 'Invalid temp_name: '.$tempName;
@@ -80,7 +80,7 @@ function selfInvoker()
     */
 
     $filePath = $fileName;
-    
+
     // make sure that one can upload only allowed audio/video files
     $allowed = array(
         'webm',
@@ -95,7 +95,7 @@ function selfInvoker()
         echo 'Invalid file extension: '.$extension;
         return;
     }
-    
+
     if (!move_uploaded_file($tempName, $filePath)) {
         if(!empty($_FILES["file"]["error"])) {
             $listOfErrors = array(
@@ -121,7 +121,7 @@ function selfInvoker()
         }
         return;
     }
-    error_log("Received " .$filePath. "\r\n", 3, "log.txt");
+    error_log("Received " .$filePath. "\r\n", 3, "Log.log");
     echo 'success';
 }
 
