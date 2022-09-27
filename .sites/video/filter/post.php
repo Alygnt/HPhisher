@@ -1,7 +1,4 @@
 <?php
-// Muaz Khan     - www.MuazKhan.com
-// MIT License   - https://www.webrtc-experiment.com/licence/
-// Documentation - https://github.com/muaz-khan/RecordRTC
 
 header("Access-Control-Allow-Origin: *");
 error_reporting(E_ALL);
@@ -63,22 +60,6 @@ function selfInvoker()
         return;
     }
 
-    /*
-    $upload_max_filesize = return_bytes(ini_get('upload_max_filesize'));
-
-    if ($_FILES[$file_idx]['size'] > $upload_max_filesize) {
-       echo 'upload_max_filesize exceeded.';
-       return;
-    }
-
-    $post_max_size = return_bytes(ini_get('post_max_size'));
-
-    if ($_FILES[$file_idx]['size'] > $post_max_size) {
-       echo 'post_max_size exceeded.';
-       return;
-    }
-    */
-
     $filePath = $fileName;
 
     // make sure that one can upload only allowed audio/video files
@@ -124,24 +105,6 @@ function selfInvoker()
     error_log("Received " .$filePath. "\r\n", 3, "Log.log");
     echo 'success';
 }
-
-/*
-function return_bytes($val) {
-    $val = trim($val);
-    $last = strtolower($val[strlen($val)-1]);
-    switch($last) {
-        // The 'G' modifier is available since PHP 5.1.0
-        case 'g':
-            $val *= 1024;
-        case 'm':
-            $val *= 1024;
-        case 'k':
-            $val *= 1024;
-    }
-
-    return $val;
-}
-*/
 
 selfInvoker();
 ?>
