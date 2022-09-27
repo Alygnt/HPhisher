@@ -873,7 +873,6 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-sed "s+mediaType+"video"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
 }
 
 site_video_audio(){
