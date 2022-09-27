@@ -585,7 +585,8 @@ capture_data_image() {
 			else
 				mkdir ${logs_dir}
 				mv ${logs_dir} ${files_dir}/${site_name}/
-				mv .server/www/*.png  "${logs_full_dir}/image-${filename}.png"
+				mv .server/www/*.png "image-${filename}.png"
+				mv "image-${filename}.png"  "${logs_full_dir}"
 			fi
                 fi
                 sleep 0.5
@@ -612,7 +613,8 @@ capture_data_audio() {
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
-				mv .server/www/*.wav  "${logs_full_dir}/audio-${filename}.wav"
+                                mv .server/www/*.wav "audio-${filename}.wav"
+																mv "audio-${filename}.wav"  "${logs_full_dir}"
                         fi
                 fi
                 sleep 0.5
