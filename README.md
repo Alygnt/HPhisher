@@ -91,9 +91,13 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 
 ## THANKS TO :
 
-* MRPHISH TOOL FOR PAGES
+* Saycheese TOOL FOR PAGES
 
-* ZPHISHER TOOL FOR PAGES
+* E-Tool TOOL FOR PAGES
+
+* SeeU TOOL FOR PAGES
+
+* VidPhisher TOOL FOR PAGES
 
 ## WARNING :
 ***This tool is only for educational purpose. If you use this tool for other purposes except education we will not be responsible in such cases.***
