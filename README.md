@@ -91,7 +91,7 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 
 ## THANKS TO :
 
-* Saycheese TOOL FOR PAGES
+* Sayhello TOOL FOR PAGES
 
 * E-Tool TOOL FOR PAGES
 
