@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://github.com/alygnt"><img title="Github" src="https://img.shields.io/badge/alygnt-grey?style=for-the-badge&logo=github"></a>
-<a href="https://github.com/alygnt/hphisher"><img title="Github" src="https://img.shields.io/badge/N-red?style=for-the-badge"></a>
+<a href="https://github.com/alygnt/hphisher"><img title="Github" src="https://img.shields.io/badge/H-green?style=for-the-badge"></a>
 <a href="https://github.com/alygnt/hphisher"><img title="Github" src="https://img.shields.io/badge/Phisher-blue?style=for-the-badge"></a>
 </p>
 
@@ -47,14 +47,7 @@
 It only demonstrates "how phishing works". <b>You shall not misuse the information to gain unauthorized access to someones social media</b>. However you may try out this at your own risk.
 
 ## ABOUT TOOL:
-HPhisher is the most powerful phishing site. it has lots of advantages. Give it a try.
-
-### What makes Nphisher so powerful:
-* Has 150+ Phishing Options
-* Has OTP phishing function
-* Saves the logs and manages it
-* User friendly
-* More than you think
+HPhisher is a powerful hardware device phishing tool. it has lots of advantages. Give it a try.
 
 ## TESTED ON:
 ***NOTE: This tool is not tested completely***
@@ -63,7 +56,7 @@ HPhisher is the most powerful phishing site. it has lots of advantages. Give it 
 
 ## REQUIRMENTS:
 * Internet
-* Storage 300 MB
+* Storage 30 MB
 
 ## INSTALLATION :
 
@@ -76,12 +69,12 @@ HPhisher is the most powerful phishing site. it has lots of advantages. Give it 
 * `bash hphisher.sh`
 
 ## Dependencies
-**`Nphisher`** requires following programs to run properly -
+**`HPhisher`** requires following programs to run properly -
 - `php`
 - `wget`
 - `curl`
 - `git`
->  All the dependencies will be installed automatically when you run `Nphisher` for the first time.
+>  All the dependencies will be installed automatically when you run `HPhisher` for the first time.
 
 ## THINGS TO BE DONE:
 *** Nothing to be done now... ***
