@@ -48,6 +48,7 @@ It only demonstrates "how phishing works". <b>You shall not misuse the informati
 
 ## ABOUT TOOL:
 HPhisher is a powerful hardware device phishing tool. it has lots of advantages. Give it a try.
+And also HPhisher is extremely light <i> less than 2mb </i>
 
 ## TESTED ON:
 ***NOTE: This tool is not tested completely***
