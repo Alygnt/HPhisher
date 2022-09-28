@@ -84,6 +84,8 @@ HPhisher is a powerful hardware device phishing tool. it has lots of advantages.
 <img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss1.jpg">
 <img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss2.jpg">
 <img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss3.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss4.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss5.jpg">
 </p>
 
 ## THANKS TO :
