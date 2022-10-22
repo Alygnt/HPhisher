@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/pics/banner.png">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/pics/banner.png">
 </p>
 
 <p align="center">
@@ -33,7 +33,7 @@
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/RDXLR/phisher-modules/main/hphisher/pics/HPhisher-poster.png">
+<img src="https://raw.githubusercontent.com/RDXLR/phisher-modules/hphisher/pics/HPhisher-poster.png">
 </p>
 
 <h3><p align="center">Disclaimer</p></h3>
@@ -82,11 +82,11 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 
 ## SCREENSHOTS :
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss1.jpg">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss2.jpg">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss3.jpg">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss4.jpg">
-<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/main/hphisher/screenshots/ss5.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss1.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss2.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss3.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss4.jpg">
+<img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss5.jpg">
 </p>
 
 ## THANKS TO :
