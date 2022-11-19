@@ -58,7 +58,7 @@ cbanner(){
 	echo -e "${GREEN} ╚══╝    ╚══╝${BLUE}╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝${NC}"
 	echo -e "${CYAN}                                                  By - ${RED}Alygnt${NC}"
 	echo -e "${CYAN}        ${NC} "
-	echo -e "${RED}                           Version 1.0 ${NC}"
+	echo -e "${RED}                           Version 1.1 ${NC}"
 	echo -e "${CYAN}        ${NC} "
 }
 #Small Banner
@@ -943,7 +943,6 @@ check_netstats() {
 		netstats="Offline"
 	fi
 }
-
 mainmenu() {
 echo -e " "
 echo -e " "
