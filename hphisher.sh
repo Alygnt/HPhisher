@@ -933,6 +933,67 @@ capture_data_video_audio() {
 	done
 }
 
+#online or offline stats
+netstats="Offline"
+check_netstats() {
+	wget -q --spider http://api.github.com
+	if [ $? -eq 0 ]; then
+		netstats="Online"
+	else
+		netstats="Offline"
+	fi
+}
+#Logs check
+logs_check() {
+	if [ -z "$(ls -A $DIR)" ]; then
+		logs_menu
+	else
+		echo "No logs found"
+		{ sleep 1; clear; mainmenu; }
+	fi
+}
+logs_menu() {
+clear
+banner
+echo -e " "
+echo -e "${RED}[${WHITE}01${RED}]${ORANGE} View Logs    "
+echo -e "${RED}[${WHITE}02${RED}]${ORANGE} Open Logs   "
+echo -e "${RED}[${WHITE}03${RED}]${ORANGE} Reset Logs  "
+echo -e "${RED}[${WHITE}04${RED}]${ORANGE} Back to Tunnel menu   "
+read -p "${RED}[${WHITE}-${RED}]${GREEN} Select a choice : ${BLUE}" reply_logs_menu
+
+        case $reply_logs_menu in
+                1 | 01)
+                        ls logs/
+			{ sleep 5; clear; logs_menu; };;
+                2 | 02)
+			ls logs/
+                        read -p "${RED}[${WHITE}?${RED}]${GREEN} Enter the file name without extension (.txt) : ${BLUE}"
+			if [ -f "logs/$REPLY.txt" ]; then
+				cat logs/$REPLY.txt
+			else
+				echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+	                        { sleep 1; clear; logs_menu; }
+			fi;;
+                3 | 03)
+			read -p "${RED}[${WHITE}?${RED}]${GREEN} Do you want to clear every victim logs (Y/n) : ${BLUE}"
+			case $REPLY in
+        	                Y | y)
+                	                rm -rf logs
+					echo -e "\n${GREEN}[${WHITE}#${GREEN}]${GREEN} Every logs successfully cleared!! ${NC} "
+					{ sleep 1; clear; tunnelmenu; };;
+                        	N | n)
+                                	{ clear;  logs_menu; };;
+
+	                esac;;
+                4 | 04)
+                        { sleep 1; clear; tunnelmenu; };;
+                *)
+                        echo -ne "\n${RED}[${WHITE}!${RED}]${RED} Invalid Option, Try Again..."
+                        { sleep 1; clear; logs_menu; };;
+        esac
+}
+
 mainmenu() {
 echo -e " "
 echo -e " "
@@ -980,12 +1041,7 @@ case $reply_site in
 	  	xdg-open https://github.com/HPhisher/NPhisher/issues/new
 		{ sleep 2; clear; banner; mainmenu; };;
 	D | d)
-	    	if [ -f logs.dat ];then
-			cat logs.dat
-		else
-			echo -ne "\n${RED}[${WHITE}!${RED}]${RED} No logs data found!!"
-			{ sleep 2; clear; mainmenu; }
-		fi;;
+	    logs_check;;
 	E | e)
 		check_update;;
 	0 | 00)
