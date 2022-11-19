@@ -985,7 +985,10 @@ case $reply_site in
 	A | a)
 		xdg-open https://github.com/Alygnt/HPhisher
 		{ sleep 2; clear; banner; mainmenu; };;
-	B | b | C | c)
+	B | b )
+		xdg-open https://github.com/Alygnt/HPhisher/discussions/new?category=new-site
+		{ sleep 2; clear; banner; mainmenu; };;
+	 C | c)
 	  	xdg-open https://github.com/Alygnt/HPhisher/issues/new
 		{ sleep 2; clear; banner; mainmenu; };;
 	D | d)
