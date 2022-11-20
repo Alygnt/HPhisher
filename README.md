@@ -68,6 +68,8 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 
 <br>
 
+## INSTALLATION :
+  
 ### Termux
 * `pkg update -y`
 * `pkg upgrade -y`
