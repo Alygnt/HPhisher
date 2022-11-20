@@ -46,28 +46,97 @@
 
 It only demonstrates "how phishing works". <b>You shall not misuse the information to gain unauthorized access to someones social media</b>. However you may try out this at your own risk.
 
+<br>
+
 ## ABOUT TOOL:
 HPhisher is a powerful hardware device phishing tool. it has lots of advantages. Give it a try.
 And also HPhisher is extremely light <i> less than 2mb </i>
 
+<br>
+
 ## TESTED ON:
-***NOTE: This tool is not tested completely***
 * Termux
 * Kali Linux
+* Google cloud shell
+* Git bash for windows
+
+<br>
 
 ## REQUIRMENTS:
 * Internet
 * Storage 30 MB
 
-## INSTALLATION :
+<br>
 
-* `apt-get update -y`
-* `apt-get upgrade -y`
+### Termux
+* `pkg update -y`
+* `pkg upgrade -y`
 * `pkg install git -y`
 * `git clone https://github.com/Alygnt/HPhisher`
 * `cd HPhisher`
-* `ls`
 * `bash hphisher.sh`
+
+### Kali Linux
+* `sudo apt update -y`
+* `sudo apt upgrade -y`
+* `sudo apt install git -y`
+* `git clone https://github.com/Alygnt/HPhisher`
+* `cd HPhisher`
+* `sudo bash hphisher.sh`
+
+### Google cloud shell
+* `apt update -y`
+* `apt upgrade -y`
+* `apt install git -y`
+* `git clone https://github.com/Alygnt/HPhisher`
+* `cd HPhisher`
+* `bash hphisher.sh`
+
+**OR**
+
+- Click this:
+<p align="left">
+  <a href="https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/Alygnt/HPhisher.git&tutorial=README.md" target="_blank"><img src="https://gstatic.com/cloudssh/images/open-btn.svg"></a>
+  </p>
+
+- Run the tool:
+  ```
+  bash hphisher.sh
+  ```
+
+### Install via '.deb' file
+- Download `.deb` files from the [**Latest Release**](https://github.com/Alygnt/HPhisher/releases/latest)
+- Install the `.deb` file by executing
+  ```
+  apt install <your path to deb file>
+  ```
+  Or
+  ```
+  dpkg -i <your path to deb file>
+  ```
+  - Run the tool by typing
+  ```
+  hphisher
+  ```
+
+### Install via '.deb' file (TERMUX)
+- Download `.deb` files from the [**Latest Release**](https://github.com/Alygnt/HPhisher/releases/latest)
+- Enable termux chroot
+  ```
+  termux-chroot
+  ```
+- Install the `.deb` file by executing
+  ```
+  apt install <your path to deb file>
+  ```
+  Or
+  ```
+  dpkg -i <your path to deb file>
+  ```
+  - Run the tool by typing
+  `hphisher`
+
+<br>
 
 ## Dependencies
 **`HPhisher`** requires following programs to run properly -
@@ -77,8 +146,39 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 - `git`
 >  All the dependencies will be installed automatically when you run `HPhisher` for the first time.
 
+<br>
+
+## API's used
+- **GitHub API**
+- **ngrok.io** to tunnel the localhost
+- **cloudflare** to tunnel the localhost
+- **localxpose.io** to tunnel the localhost
+- **ipwhois.app** to get IP details
+- **is.gd** to shorten url
+- **shrtco.de** to shorten url
+- **tinyurl.com** to shorten url
+
+<br>
+
 ## THINGS TO BE DONE:
-*** Nothing to be done now... ***
+- Mails you the login details 
+- Network check before starting tunneler
+- To change type to number from password in few otp pages
+- To display users ip in main menu
+- Instagram OTP phishing page fix
+- Custom redirect Url
+- Ngrok no hotspot verion 
+- User's device ip display in main menu
+  
+**<a href="https://github.com/Alygnt/HPhisher/discussions/new?category=ideas">I have a Idea!!</a>**
+
+<br>
+
+## Bugs recognized (need to be fixed):
+**All identified bugs has been fixed**
+**<a href="hhttps://github.com/Alygnt/NPhisher/issues/new">I experienced a bug!!</a>**
+
+<br>
 
 ## SCREENSHOTS :
 <p align="center">
@@ -89,14 +189,12 @@ And also HPhisher is extremely light <i> less than 2mb </i>
 <img src="https://raw.githubusercontent.com/Alygnt/phisher-modules/hphisher/screenshots/ss5.jpg">
 </p>
 
+<br>
+
 ## THANKS TO :
-
 * Sayhello TOOL FOR PAGES
-
 * E-Tool TOOL FOR PAGES
-
 * SeeU TOOL FOR PAGES
-
 * VidPhisher TOOL FOR PAGES
 
 ## WARNING :
